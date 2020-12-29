@@ -1,0 +1,67 @@
+@charset "utf-8";
+
+// color
+$--color-white: #fff !default;
+$--color-black: #000 !default;
+$--color-gray: #ddd !default;
+
+// 颜色值
+$mainColor: #4183D7;            // 主色调
+$secondMainColor: #18b6ff;      // 第二主色
+$secondColor: #3996f2;          // 蓝色
+$thirdColor: #FF8400;           // 橙色
+$greenColor: #27ae60;           // 股票跌 绿色
+$btnColor: #6A7180;             // 蓝灰色按钮
+
+$alphaWhite: rgba(255,255,255,0.6);     // 半透明的文字颜色
+$tipGray: #c8c8ce;                      // 提示文字灰色
+$lightGray: #999;                       // 浅灰
+$mediumGray: #666;                      // 中灰
+$darkGray: #333;                        // 深灰，默认文字颜色
+$globalBg: #fff;                        // 全局背景色，白色
+$grayBg: #f5f5f5;                       // 局部浅灰色背景色
+
+$borderColor: #d1dbe5;
+$borderColor2: #e7e7eb;
+$secondBorderColor: #e5e5e5;
+$border: 1px solid $borderColor;    // 默认的边框
+$border2: 1px solid $borderColor2;
+$radius: 3px;                       // 默认的圆角半径
+
+$gap: 8px;
+$mainNavHeight: 50px;
+$inputHeight: 54px;
+$wideBtnHeight: 44px;
+
+$mainTitleFont: 22px;
+$exBigFont: 18px;
+$bigFont: 16px;
+$mediumFont: 14px;
+$smallFont: 12px;
+
+$borderColor_dark: #eaeaea;
+
+// 转场时间
+$transitionTime: 0.2s;
+
+$maxWidth: 750px;
+
+// 头像
+$smallHead: 30px;
+$mediumHead: 72px;
+$bigHead: 100px;
+
+$defaultPadding: 8px; // 默认边距
+$colorBlockMargin: 6px;  // 页面色块的间隔距离
+
+
+
+
+
+
+
+
+
+
+
+

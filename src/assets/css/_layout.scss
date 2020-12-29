@@ -1,0 +1,70 @@
+@charset "utf-8";
+@import "variable";
+
+// 页面布局
+#app {
+    overflow: hidden;
+}
+.G_home {
+    height: 100%;
+    width: 100%;
+    .G_head {
+        height: 50px;
+    }
+    .G_main {
+        height: calc(100% - 50px);
+        display: flex;
+        flex-direction: column;
+        margin-top: 50px;
+        padding: 10px;
+        background-color: $--color-gray;
+        overflow: auto;
+        .G_bread {
+            flex-shrink: 0;
+            height: 30px;
+        }
+        .G_content {
+            flex: 1;
+            overflow: hidden;
+            background: $--color-white;
+            position: relative;
+            & > div:first-child {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &.with-bread {
+            padding-top: 0;
+        }
+    }
+}
+
+// 表格布局
+.G_content {
+    .P_content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        background: $--color-white;
+        .content__search {
+            flex-shrink: 0; // 表示search、page均不被弹性盒子压缩，只压缩table
+        }
+        .content__table {
+            flex: 1;
+        }
+        .content__page {
+            flex-shrink: 0;
+            position: relative;
+            height: 30px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            text-align: right;
+            .el-pagination__total {
+                position: absolute;
+                top: 5px;
+                left: 10px;
+            }
+        }
+    }
+}

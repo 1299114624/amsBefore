@@ -1,0 +1,134 @@
+@charset "utf-8";
+@import "variable";
+
+html,
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+div,
+ul,
+li,
+dl,
+dt,
+dd,
+img,
+header,
+footer,
+nav,
+section,
+article,
+span,
+a,
+em,
+strong,
+b,
+table,
+tbody,
+tr,
+th,
+td,
+label,
+input,
+pre,
+textarea,
+button {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: $smallFont;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: $mediumFont;
+}
+
+h1,
+strong {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: $mainTitleFont;
+}
+
+li {
+    list-style: none;
+}
+
+img {
+    border: none;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+em {
+    font-style: normal;
+}
+
+label,
+input,
+textarea,
+button,
+select,
+a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+
+a {
+    text-decoration: none;
+}
+
+textarea {
+    resize: none;
+}
+
+a:focus {
+    outline: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $globalBg;
+    font-size: $smallFont;
+    color: $darkGray;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    min-width: 1080px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+pre {
+    white-space: nowrap;
+    word-wrap: break-word;
+    word-break: break-all;
+}
