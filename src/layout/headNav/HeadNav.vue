@@ -4,9 +4,60 @@
       <div class="logo-container flexbox align-center"></div>
       <div class="flexbox align-center adapt" id="menuContainer">
         <div class="menuContainer">
-            <!-- 用于辅助计算宽度，不显示 -->
-            <ul id="calculateDOM"></ul>
-            <ul></ul>
+            <!-- calculateDOM 用于辅助计算宽度，不显示 -->
+            <ul id="calculateDOM">
+              <li v-for="(menu,index) in navArr" v-if="!menu.hidden" :key="index">
+                <span>{{menu.meta.alias}}</span>
+              </li>
+            </ul>
+            <ul>
+              <li
+                v-for="(menu,index) in navArrPlain"
+                :key="index"
+                v-if="!menu.hidden"
+                :style="{cursor:menu.leaf?'auto':'pointer',height:'50px'}"
+                :class="{active: currentMainMenu.indexOf(menu.path) !== -1}"
+                @click="onMenuClick(menu)">
+                <span>{{menu.meta.alias}}</span>  
+                <!-- 普通菜单 -->
+                <div class="menuContent" v-if="menu.leaf&&!menu.meta.isClassify">
+                  <ul class="childArr">
+                    <li v-for="(subMenu,index) in menu.children" :key="index" v-if="!menu.hidden">
+                      <span v-if="subMenu.index===1">{{subMenu.subTitle?sunMenu.subTitle:''}}</span>
+                      <p @click.stop="onMenuClick(subMenu)">{{subMenu.meta.alias}}</p>
+                    </li>
+                  </ul>
+                </div>
+                <!-- 三级菜单 -->
+                <div class="menuContent" v-for="(classifyMenu,i) in classifyMenuObj" :key="i" 
+                v-if="menu.leaf&&menu.meta.isClassify">
+                  <ul class="childArr" v-for="(classify,n) in classifyMenu.children" :key="n">
+                    <li><span>{{menuClassifyEnum[classify]}}</span></li>
+                    <li v-for="(subMenu,index) in menu.children" :key="index"
+                    v-if="!menu.hidden&&sunMenu.meta.type===classify">
+                      <p @click.stop="onMenuClick(subMenu)">{{subMenu.meta.alias}}</p>
+                    </li>
+                  </ul>                  
+                </div>
+              </li>  
+              <li class="menuMore" v-if="navArrPlain.length-1!==navArr.length&&navArrMore.length!==0"
+              style="border-bottom:0px">
+                <i class="el-icon-caret-bottom"></i>
+                <div class="menuContent plain-scrollbar">
+                  <!-- 普通菜单 -->
+                  <ul class="childArr" v-for="(menu,index) in navArrMore" :key="index"
+                  v-if="!menu.hidden&&!menu.meta.isClassify">
+                    <li v-if="!menu.leaf">
+                      <p @click.stop="onMenuClick(menu)">{{menu.meta.alias}}</p>
+                    </li>
+                    <li v-for="(subMenu,index) in menu.children" :key="index" v-if="!subMenu.hidden&&subMenu.leaf">
+                      <span v-if="index===0">{{menu.meta.alias}}</span>
+                      <p @click.stop="onMenuClick(subMenu)">{{subMenu.meta.alias}}</p>                      
+                    </li>
+                  </ul>
+                </div>
+              </li>              
+            </ul>
         </div>
       </div>
       <div class="flexbox align-center messages"></div>
@@ -15,7 +66,32 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapState } from 'vuex'
+export default {
+  data() {
+    return {
+      navArr: [],
+      navArrPlain: [],
+      navArrMore: [],
+      classifyMenuObj: {},
+      menuClassifyEnum: []
+    }
+  },
+  computed: {
+    ...mapGetters(["menu_routers"]),
+  },
+  created() {
+    this.formatNavArr();
+  },
+  mounted() {
+    console.log("menu_routers",_.cloneDeep(this.menu_routers))
+  },
+  methods: {
+    formatNavArr() {
+      
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
