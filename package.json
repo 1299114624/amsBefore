@@ -5,7 +5,7 @@
   "author": "1299114624 <1299114624@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "npm run build:router && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "npm run build:router && node build/build.js",
     "build:router": "node build/bin/build-router.js"
@@ -17,6 +17,7 @@
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "nprogress": "^0.2.0",
+    "path-to-regexp": "^2.2.0",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.0",
     "vue-router": "^3.0.1",

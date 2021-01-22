@@ -4,6 +4,14 @@
  * 用来生成router/arc/import.js
  */
 var STANDARD_IMPORT = {
+    // 基础信息维护-组件管理
+    componentManagement: 'views/arc/baseInfoManagement/componentManagement',
+    // 基础信息维护-功能管理
+    functionManagement: 'views/arc/baseInfoManagement/functionManagement',
+    // 基础信息维护-产品管理
+    productManagement: 'views/arc/baseInfoManagement/productManagement',
+    // 基础信息维护-客制产品管理
+    clientProductManagement: 'views/arc/baseInfoManagement/clientProductManagement',
     // 系统异常页面
     NotPermission: 'views/exception/403.vue',
     NotFound: 'views/exception/404.vue',
@@ -17,6 +25,7 @@ var STANDARD_IMPORT = {
  * 用来生成router/arc/client.js
  */
 var STANDARD_VIEWS = {
+    baseInfoManagement: './standard/baseInfoManagement.js',
     NotPermission: './standard/notPermission.js',
     NotFound: './standard/notFound.js',
     Welcome: './standard/welcome.js',

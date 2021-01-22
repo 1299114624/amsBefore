@@ -1,3 +1,4 @@
 import store from './store'
+import ajax from './ajax'
 
-export { store }
+export { store, ajax }

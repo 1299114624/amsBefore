@@ -23,3 +23,14 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.G_bread {
+    .el-breadcrumb {
+        font-size: 12px;
+    }
+    .el-bread {
+        line-height: 30px;
+    }
+}
+</style>

@@ -4,8 +4,144 @@
     display: flex;
 }
 
-.adapt {
-    box-flex: 1;
+// 设置弹性盒主轴方向为垂直
+.main-vertical {
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -ms-box-orient: vertical;
+
+    /* 设置主轴方向为 从上到下 */
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    -o-flex-direction: column;
+    flex-direction: column;
+}
+
+// 主轴start对齐
+.main-align-start {
+    -webkit-box-pack: start;
+    -moz-box-pack: start;
+    -ms-box-pack: start;
+
+    /* 设置主轴对齐 */
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+// 主轴center对齐
+.main-align-center {
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-box-pack: center;
+
+    /* 设置主轴对齐 */
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+// 主轴end对齐
+.main-align-end {
+    -webkit-box-pack: end;
+    -moz-box-pack: end;
+    -ms-box-pack: end;
+
+    /* 设置主轴对齐 */
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+
+// 主轴justify对齐
+.main-align-justify {
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -ms-box-pack: justify;
+
+    /* 设置主轴对齐 */
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+
+//侧轴start对齐
+@mixin align-start {
+    -webkit-box-align: start;
+    -moz-box-align: start;
+    -ms-box-align: start;
+
+    /* 设置主轴对齐 */
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    
+}
+
+//侧轴center对齐
+@mixin align-center {
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-box-align: center;
+
+    /* 设置主轴对齐 */
+    -webkit-align-items: center;
+    align-items: center;
+    
+}
+
+//侧轴end对齐
+@mixin align-end {
+    -webkit-box-align: end;
+    -moz-box-align: end;
+    -ms-box-align: end;
+
+    /* 设置主轴对齐 */
+    -webkit-align-items: flex-end;
+    align-items: flex-end;
+    
+}
+
+//侧轴stretch对齐
+@mixin align-stretch {
+    -webkit-box-align: stretch;
+    -moz-box-align: stretch;
+    -ms-box-align: stretch;
+
+    /* 设置主轴对齐 */
+    -webkit-align-items: stretch;
+    align-items: stretch;
+    
+}
+
+.align-start {
+    @include align-start;
+}
+.align-center {
+    @include align-center;
+}
+.align-end {
+    @include align-end;
+}
+.align-stretch {
+    @include align-stretch;
+}
+
+.flex1 {
     flex: 1;
+}
+
+/** 设置单个伸缩项目自身 自适应长度（尽量伸长）
+ *  前提是别的伸缩项目的 flex 为 0 （即不显示设置）
+ */
+
+.adapt {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-box-flex: 1;
+    box-flex: 1;
+
+    -webkit-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    -o-flex: 1;
+    flex: 1;
+    
     overflow: auto;
 }

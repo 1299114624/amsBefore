@@ -1,63 +1,78 @@
 <template>
   <div class="G_head">
     <header class="flexbox">
-      <div class="logo-container flexbox align-center"></div>
-      <div class="flexbox align-center adapt" id="menuContainer">
+      <div class="logo-container flexbox align-center">
+        <img src="../../assets/client/logo.png" width="38" height="22" class="logo pointer" @click="onMenuClick({name:'welcome'})">
+        <span class="system-name">{{ systemInfo.name }}</span>
+        <span class="version">
+          <span :class="[systemInfo.status === 2 ? 'red-dot' : 'blue-dot']"></span>
+          <span :class="[systemInfo.status === 2 ? 'preStatusName' : 'preStatusName-distinct']">
+            {{ systemInfo.preStatusName }}环境
+          </span>
+        </span>
+        <div class="split"></div>
+      </div>
+      <div class="flexbox align-center flex1" id="menuContainer">
         <div class="menuContainer">
-            <!-- calculateDOM 用于辅助计算宽度，不显示 -->
-            <ul id="calculateDOM">
-              <li v-for="(menu,index) in navArr" v-if="!menu.hidden" :key="index">
-                <span>{{menu.meta.alias}}</span>
-              </li>
-            </ul>
-            <ul>
-              <li
-                v-for="(menu,index) in navArrPlain"
-                :key="index"
-                v-if="!menu.hidden"
-                :style="{cursor:menu.leaf?'auto':'pointer',height:'50px'}"
-                :class="{active: currentMainMenu.indexOf(menu.path) !== -1}"
-                @click="onMenuClick(menu)">
-                <span>{{menu.meta.alias}}</span>  
-                <!-- 普通菜单 -->
-                <div class="menuContent" v-if="menu.leaf&&!menu.meta.isClassify">
-                  <ul class="childArr">
-                    <li v-for="(subMenu,index) in menu.children" :key="index" v-if="!menu.hidden">
-                      <span v-if="subMenu.index===1">{{subMenu.subTitle?sunMenu.subTitle:''}}</span>
-                      <p @click.stop="onMenuClick(subMenu)">{{subMenu.meta.alias}}</p>
-                    </li>
+          <!-- calculateDOM 用于辅助计算宽度，不显示 -->
+          <ul id="calculateDOM" class="flexbox">
+            <li v-for="(menu,index) in navArr" :key="index" class="ml-10 mr-10">
+              <p class="f-14">
+                {{menu.meta.alias}}
+              </p>
+            </li>
+          </ul>
+          <ul class="flexbox menu-wrapper">
+            <li
+              v-for="(mainMenu,index) in cloneNavArr"
+              :key="index"
+              class="main-menu ml-10 mr-10"
+              :class="{'click-active':[$route.meta.grandParentName,$route.meta.parentName,$route.name].includes(mainMenu.name)}">
+              <p class="main-menu-name f-14" :class="{pointer:!mainMenu.meta.hasLeaf}" @click="handleMainClick(mainMenu)">
+                {{ mainMenu.meta.alias }}
+              </p>
+              <!-- 小屏，超过三个二级菜单靠右定位，以免超出屏幕 -->
+              <ul class="subMenu flexbox" :class="{'pos-right':index>3,'pos-left':index<=3}" v-if="mainMenu.meta.hasLeaf">
+                <li class="subMenu-item" v-for="(subItem,subIndex) in mainMenu.children" :key="subIndex">
+                  <div class="menu-item-wrapper" v-for="(menuItem,menuIndex) in subItem" :key="menuIndex">
+                    <template v-if="menuItem.isShadowMenu">
+                      <p class="f-12 shadow-menu">{{ menuItem.groupName }}</p>
+                    </template>
+                    <template v-if="!menuItem.isShadowMenu" >
+                      <p class="f-12 pointer normal-menu" @click="onMenuClick(menuItem)"
+                      :class="{'active-menu-item':[$route.meta.parentName,$route.name].includes(menuItem.name)}">
+                        {{ menuItem.meta.alias }}
+                      </p>
+                    </template>
+                  </div>
+                </li>
+              </ul>
+            </li>  
+            <li class="flexbox menu-more align-center main-align-center" v-if="boundIndex>0">
+              <i class="el-icon-caret-bottom pointer" 
+                :class="{'icon-active':menuMoreNames.includes($route.meta.parentName)||
+                menuMoreNames.includes($route.meta.parentName)}"></i>
+              <div class="flexbox subMenu-more">
+                <div class="subMenu-more-item" v-for="(moreMenu,index) in menuMore" :key="index">
+                  <ul class="subMenu-more-wrapper pb-10">
+                    <li class="subMenu-inner" v-for="(moreItem,moreIndex) in moreMenu.children" :key="moreIndex">
+                      <div class="subMenu-inner-menu" v-for="(menuItem,menuIndex) in moreItem" :key="menuIndex">
+                        <template v-if="menuItem.isShadowMenu">
+                          <p class="f-12 shadow-menu">{{ menuItem.groupName }}</p>
+                        </template>
+                        <template v-if="!menuItem.isShadowMenu" >
+                          <p class="f-12 pointer normal-menu" @click="onMenuClick(menuItem)"
+                          :class="{'active-menu-item':[$route.meta.parentName,$route.name].includes(menuItem.name)}">
+                            {{ menuItem.meta.alias }}
+                          </p>
+                        </template>
+                      </div>
+                    </li>                      
                   </ul>
                 </div>
-                <!-- 三级菜单 -->
-                <div class="menuContent" v-for="(classifyMenu,i) in classifyMenuObj" :key="i" 
-                v-if="menu.leaf&&menu.meta.isClassify">
-                  <ul class="childArr" v-for="(classify,n) in classifyMenu.children" :key="n">
-                    <li><span>{{menuClassifyEnum[classify]}}</span></li>
-                    <li v-for="(subMenu,index) in menu.children" :key="index"
-                    v-if="!menu.hidden&&sunMenu.meta.type===classify">
-                      <p @click.stop="onMenuClick(subMenu)">{{subMenu.meta.alias}}</p>
-                    </li>
-                  </ul>                  
-                </div>
-              </li>  
-              <li class="menuMore" v-if="navArrPlain.length-1!==navArr.length&&navArrMore.length!==0"
-              style="border-bottom:0px">
-                <i class="el-icon-caret-bottom"></i>
-                <div class="menuContent plain-scrollbar">
-                  <!-- 普通菜单 -->
-                  <ul class="childArr" v-for="(menu,index) in navArrMore" :key="index"
-                  v-if="!menu.hidden&&!menu.meta.isClassify">
-                    <li v-if="!menu.leaf">
-                      <p @click.stop="onMenuClick(menu)">{{menu.meta.alias}}</p>
-                    </li>
-                    <li v-for="(subMenu,index) in menu.children" :key="index" v-if="!subMenu.hidden&&subMenu.leaf">
-                      <span v-if="index===0">{{menu.meta.alias}}</span>
-                      <p @click.stop="onMenuClick(subMenu)">{{subMenu.meta.alias}}</p>                      
-                    </li>
-                  </ul>
-                </div>
-              </li>              
-            </ul>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flexbox align-center messages"></div>
@@ -70,26 +85,93 @@ import { mapGetters, mapState } from 'vuex'
 export default {
   data() {
     return {
+      menuMoreNames: [],
+      menuMore: [],
       navArr: [],
-      navArrPlain: [],
-      navArrMore: [],
-      classifyMenuObj: {},
-      menuClassifyEnum: []
+      cloneNavArr: [],
+      boundIndex: 0,
     }
   },
   computed: {
     ...mapGetters(["menu_routers"]),
+    ...mapState({
+      systemInfo: state => state.global.systemInfo,
+    }),
   },
   created() {
     this.formatNavArr();
   },
   mounted() {
-    console.log("menu_routers",_.cloneDeep(this.menu_routers))
+    this.$nextTick(() => {
+      this.calculateMenuContainerWidth();
+    })
+    $(window).resize(() => {
+      this.calculateMenuContainerWidth();
+    })
+    console.log("navArr",_.cloneDeep(this.navArr))
   },
   methods: {
     formatNavArr() {
-      
-    }
+      let navArr = _.cloneDeep(this.menu_routers[0].children).filter(menu=>!menu.hidden);   
+      navArr.forEach((item,index) => {
+        if (item.children) {
+          item.meta.hasLeaf = true
+          let groupedChildren = {}
+          let newChildren = []
+          if(_.findIndex(item.children,"groupName")==-1) {
+            // 不分组的情况
+            newChildren.push(item.children)
+          } else {
+            groupedChildren = _.groupBy(item.children,"groupName");
+            for(const key in groupedChildren) {
+              if(groupedChildren.hasOwnProperty(key) && key !== "undefined") {
+                const element = groupedChildren[key];
+                const groupName = element[0].groupName;
+                element.unshift({ isShadowMenu: true, groupName: groupName });
+                newChildren.push(element);
+              }
+            }
+          }
+          item.children = newChildren;
+        }
+      })
+      this.navArr = navArr
+      this.cloneNavArr = _.cloneDeep(navArr)
+    },
+    calculateMenuContainerWidth: _.throttle(function() {
+      const menuContainerWidth = $("#menuContainer").outerWidth(true);
+      const calculateDOMs = $("#calculateDOM > li");
+      const length = calculateDOMs.length;
+      let sum = 0;
+      let boundIndex = 0;
+      calculateDOMs.each((index, el) => {
+        sum = sum + $(el).outerWidth(true);
+        if (sum > menuContainerWidth) {
+          boundIndex = index;
+          return false
+        }
+      });
+      let cloneMenus = _.cloneDeep(this.cloneNavArr);
+      if(boundIndex <= length - 1 && boundIndex > 0) {
+        boundIndex = boundIndex - 1;
+        this.menuMore  = cloneMenus.splice(boundIndex);
+        this.navArr = cloneMenus;
+        this.boundIndex = boundIndex;
+        this.menuMoreNames = this.menuMore.map(item => item.name);
+      } else {
+        this.navArr = cloneMenus;
+        this.boundIndex = 0;
+        this.menuMore = [];
+      }
+    }, 300),
+    onMenuClick(route) {
+      this.$router.push({ name: route.name })
+    },
+    handleMainClick(menuItem) {
+      if(!menuItem.children) {
+        this.$router.push({ name: menuItem.name })
+      }
+    },
   }
 };
 </script>
@@ -114,23 +196,149 @@ $icon-size: 20px;
   z-index: 1999;
   header {
     height: $header-height;
-    .menuContainer {
-      height: 100%;
-      #calculateDOM {
-        visibility: hidden;
-        position: fixed;
-        top: -999px;
+    .logo-container {
+      background: $header-color;
+      .logo {
+        margin-right: 16px;
+        margin-left: 8px;
+        min-width: auto;
       }
-      ul li {
-        display: inline-block;
-        margin: 0 10px;
-        position: relative;
-        text-align: center;
-        line-height: 50px;
-        font-style: 14px;
+      .system-name {
+        cursor: pointer;
         color: #fff;
-        box-sizing: border-box;
+        font-size: 16px;
+        font-weight: bold;
+        white-space: nowrap;
       }
+      .version {
+        font-size: 12px;
+        padding: 0 16px 0 8px;
+        white-space: nowrap;
+        .red-dot {
+          display: inline-block;
+          background-color: #ff4d4d;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+        }
+        .blue-dot {
+          display: inline-block;
+          background-color: #2d83ec;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;          
+        }
+        .preStatusName {
+          color: #a0aac8;
+          font-size: 12px;
+          margin-left: 4px;
+        }
+        .preStatusName-distinct {
+          color: #fff;
+          font-size: 12px;
+          margin-left: 4px;
+        }
+      }
+      .split {
+        border-left: 1px solid #394367;
+        height: 18px;
+      }
+    }
+    #menuContainer {
+      background: $header-color;
+      .menuContainer {
+        height: 100%;   
+        #calculateDOM {
+          visibility: hidden;
+          position: fixed;
+          top: -999px;
+        }
+        .menu-wrapper {
+          flex-wrap: wrap;
+          .main-menu {
+            height: 50px;
+            position: relative;
+            border-width: 0;
+            &.click-active {
+              .main-menu-name {
+                color: #1e90ff;
+              }
+            }
+            &::after {
+              content: "";
+              display: inline-block;
+              width: 0;
+              height: 3px;
+              background: #1e90ff;
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              transition: all .4s cubic-bezier(0.46, 1, 0.23, 1.52);
+            }
+            &:hover {
+              &::after {
+                width: 100%;
+                left: 0;
+              }
+              .main-menu-name {
+                color: #1e90ff;
+              }
+              .subMenu {
+                transform: translateY(0);
+              }
+            }
+            .main-menu-name {
+              color: #fff;
+              height: 50px;
+              line-height: 50px;
+              white-space: nowrap;
+            }
+            .subMenu {
+              background: #2c3c69;
+              position: absolute;
+              z-index: -1;
+              padding: 10px 0;
+              transform: translateY(-100%);
+              transition: all .2s linear;
+              white-space: nowrap;
+              &.pos-left {
+                left: -20px;
+              }
+              &.po-right {
+                right: -85px;
+              }
+              .subMenu-item {
+                min-width: 160px;
+                border-right: 1px solid #253359;
+                .menu-item-wrapper {
+                  height: 30px;
+                  line-height: 30px;
+                  p {
+                    padding: 0 20px;
+                  }
+                  .normal-menu {
+                    color: #fff;
+                  }
+                  .shadow-menu {
+                    color: rgba(160, 170, 200, 0.698);
+                  }
+                }
+                .pointer:hover {
+                  background: #56a6f7;
+                }
+                .active-menu-item {
+                  background: #1e90ff !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .messages {
+      min-width: 260px;
+      position: relative;
+      background: $header-color;
     }
   }
 }

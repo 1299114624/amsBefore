@@ -1,6 +1,7 @@
  /* 由 build/bin/build-router.js 自动生成 */
 
 import { Home } from 'layout/'
+import baseInfoManagement from './standard/baseInfoManagement.js';
 import NotPermission from './standard/notPermission.js';
 import NotFound from './standard/notFound.js';
 import Welcome from './standard/welcome.js';
@@ -16,6 +17,7 @@ export default {
     redirect: '/home',
     component: Home,
     children: [
+       baseInfoManagement,
        NotPermission,
        NotFound,
        Welcome
