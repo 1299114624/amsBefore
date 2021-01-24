@@ -27,8 +27,9 @@ var STANDARD_IMPORT = {
 var STANDARD_VIEWS = {
     baseInfoManagement: './standard/baseInfoManagement.js',
     NotPermission: './standard/notPermission.js',
-    NotFound: './standard/notFound.js',
     Welcome: './standard/welcome.js',
+    // 注意notfound要在最后
+    NotFound: './standard/notFound.js',
 }
 
 module.exports = {

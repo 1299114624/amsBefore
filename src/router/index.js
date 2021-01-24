@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
   const execute = function() {
     const roles = []
     store.dispatch('GenerateRoutes', { roles }).then(() => {
-      console.log('GenerateRoutes', JSON.parse(JSON.stringify(store.getters.addRouters)))
+      console.log('GenerateRoutes', _.cloneDeep(store.getters.addRouters))
       router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表（具体看store/permission）
       isGenRouter = true
       next(to) // hack 方法确保 addRoutes 已完成 

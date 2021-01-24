@@ -1,13 +1,80 @@
 <template>
-  
+  <div class="P_product P_content">
+    <div class="content__search">
+      <el-button type="primary" @click="handleAddProduct('add')">新增产品</el-button>
+    </div>
+    <div class="content__table">
+      <el-table :data="list" stripe height="100%">
+        <el-table-column label="产品英文简称" prop="simpleEnglishName" min-width="150"></el-table-column>
+        <el-table-column label="产品英文全称" prop="fullEnglishName" min-width="200"></el-table-column>
+        <el-table-column label="产品中文全称" prop="fullChineseName" min-width="200"></el-table-column>
+        <el-table-column label="对应客户" prop="usedCompanyNames" min-width="200"></el-table-column>
+        <el-table-column label="产品负责人" prop="chargeMemberNames" min-width="150"></el-table-column>
+        <el-table-column label="产品介绍" prop="productDesc" min-width="250"></el-table-column>
+        <el-table-column label="创建时间" prop="addTime" min-width="150"></el-table-column>
+        <el-table-column label="最新修改时间" prop="updateTime" min-width="150"></el-table-column>
+        <el-table-column label="操作" fixed="right" width="180">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleModifyProduct('modify',scope.row)">修改</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <el-pagination
+      class="content__page"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="pageNumber"
+      :page-sizes.sync="pageSizes"
+      :page-size.sync="pageSize"
+      :layout="paginationLayout"
+      :total.sync="totalCount"
+    ></el-pagination>
+    <addProduct
+      :isVisible.sync="showAddProduct"
+      :type="type"  
+      :detail="detail"  
+      @refresh="onSubmit"
+    ></addProduct>
+  </div>
 </template>
 
 <script>
+import { baseTableMixin, resizeMixin } from 'mixins'
+import addProduct from './addProduct'
 export default {
-
+  mixins: [baseTableMixin, resizeMixin],
+  components: {
+    addProduct
+  },
+  data() {
+    return {
+      list: [{},{},{}],
+      showAddProduct: false,
+      type: '',
+      detail: {},
+    }
+  },
+  mounted() {
+    this.query()
+  },
+  methods: {
+    onSubmit() {
+      this.pageNumber = 1
+      this.query()
+    },
+    query() {},
+    handleAddProduct(type, detail) {
+      this.showAddProduct = true
+      this.type = type
+      this.detail = detail
+    },
+  }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.P_product {
+  height: 100%;
+}
 </style>

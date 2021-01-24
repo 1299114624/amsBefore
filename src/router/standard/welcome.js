@@ -1,12 +1,11 @@
 import { Welcome } from '../import'
+import { Content } from 'layout/';
 export default {
     path: 'welcome',
     name: 'welcome',
     meta: {
-        alias: '欢迎使用',
-        bread: true
+        alias: '欢迎使用'
     },
-    leaf: false,
+    component: Welcome,
     hidden: true,
-    component: Welcome
 }

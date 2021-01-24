@@ -3,10 +3,8 @@ export default {
     path: 'notPermission',
     name: 'notPermission',
     meta: {
-        alias: '无权访问',
-        bread: true
+        alias: '无权访问'
     },
-    leaf: false,
     hidden: true,
     component: NotPermission
 }

@@ -3,10 +3,8 @@ export default {
     path: '*',
     name: 'notFound',
     meta: {
-        alias: '404',
-        bread: true
+        alias: '404'
     },
-    leaf: false,
     hidden: true,
     component: NotFound
 }

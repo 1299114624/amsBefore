@@ -44,7 +44,7 @@ export default {
                     }
                 })
             }
-            let arr = asyncRouterMap[0] ? asyncRouterMap[0].children : []
+            let arr = asyncRouterMap[0] ? asyncRouterMap[0].children : []    
             commit('SET_ROUTERS', asyncRouterMap)
             resolve()
         })

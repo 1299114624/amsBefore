@@ -3,8 +3,8 @@
 import { Home } from 'layout/'
 import baseInfoManagement from './standard/baseInfoManagement.js';
 import NotPermission from './standard/notPermission.js';
-import NotFound from './standard/notFound.js';
 import Welcome from './standard/welcome.js';
+import NotFound from './standard/notFound.js';
 
 export default {
     path: '/',
@@ -19,7 +19,7 @@ export default {
     children: [
        baseInfoManagement,
        NotPermission,
-       NotFound,
-       Welcome
+       Welcome,
+       NotFound
     ]
 }

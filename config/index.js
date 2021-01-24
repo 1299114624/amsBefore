@@ -1,8 +1,18 @@
 'use strict'
+const { hostname } = require('os');
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+
+let hostName = "http://10.2.6.50:8090"   //冒烟环境
+// let hostName = "http://localhost:8080"
+
+var port = 80;
+var _port = Number(process.argv[2]);
+if (_port && Number.isInteger(_port)) {
+  port = _port;
+}
 
 module.exports = {
   dev: {
@@ -10,11 +20,14 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/arc': { target: hostName, changeOrigin: true, pathRewrite: { '^/arc': '/arc' } },
+      '/arc/websocket': { target: hostName, ws:true, changeOrigin: true, pathRewrite: { '^/arc/websocket': '/arc/websocket' } },
+    },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
+    port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
