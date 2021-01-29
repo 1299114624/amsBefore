@@ -1,7 +1,7 @@
 <template>
   <div class="P_product P_content">
     <div class="content__search">
-      <el-button type="primary" @click="handleAddProduct('add')">新增产品</el-button>
+      <el-button type="primary" @click="handleAddProduct('add')" class="ml-10">新增产品</el-button>
     </div>
     <div class="content__table">
       <el-table :data="list" stripe height="100%">
@@ -76,5 +76,8 @@ export default {
 <style lang="scss" scoped>
 .P_product {
   height: 100%;
+  .content__search {
+    line-height: 40px;
+  }
 }
 </style>

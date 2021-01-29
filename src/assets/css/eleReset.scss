@@ -1,0 +1,245 @@
+//dialog
+.el-dialog__body {
+  padding: 10px 20px 20px 20px;
+  color: #48576a;
+  font-size: 14px;
+}
+.el-dialog__header {
+  padding: 15px 15px 0 15px;
+  background: #4183d7;
+  height: 50px;
+  font-size: 16px;
+}
+.el-dialog__title {
+  font-size: 16px;
+  color: #fff;
+}
+.el-dialog__headerbtn {
+  top: 16px;
+  right: 15px;
+}
+.el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 22px;
+}
+// form
+.el-form-item__label {
+  font-size: 12px;
+}
+.el-form-item {
+  margin-bottom: 15px;
+}
+.el-form-item__error {
+  padding-top: 0px;
+}
+
+// input
+.el-input {
+  font-size: 12px;
+  .el-input__icon {
+    line-height: 100%;
+  }
+}
+.el-input__inner {
+  height: 28px;
+}
+.el-input__inner:focus {
+  border-color: #409eff;
+  -webkit-box-shadow: 0 0 0 2px rgba(24,144,255,.2);
+  box-shadow: 0 0 0 2px rgba(24,144,255,.2);
+}
+.el-textarea__inner {
+  font-size: 12px;
+}
+
+// menu
+.el-menu-item * {
+  vertical-align: initial;
+}
+.el-submenu .el-submenu__title {
+  height: 40px;
+  line-height: 40px;
+}
+
+// date
+.el-date-editor.el-input {
+  width: 160px;
+}
+.el-date-editor .el-range__icon {
+  line-height: normal;
+}
+.el-date-editor .el-range__separator {
+  line-height: normal;
+}
+.el-date-editor .el-range__close-icon {
+  line-height: normal;
+}
+
+// button
+.el-button {
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 0px;
+}
+
+// card
+.el-card__header {
+  padding: 8px 20px;
+  border-bottom: 1px solid #d1dbe5;
+  box-sizing: border-box;
+}
+
+// checkbox
+.el-checkbox__inner {
+  width: 15px;
+  height: 15px;
+  background-color: #fff;
+  z-index: 1;
+  transition: none;
+}
+.el-checkbox__label {
+  font-size: 12px;
+}
+.el-checkbox__inner::after {
+  height: 7px;
+  width: 3px;
+  left: 4px;
+}
+
+// Tabs
+.el-tabs {
+  &.el-tabs--border-card {
+    border: none;
+  }
+}
+
+// select
+.el-select-dropdown__item {
+  font-size: 12px;
+  height: 30px;
+}
+.el-select-dropdown__item span{
+  padding-right: 14px;
+}
+
+// cascader
+.el-casecader,
+.el-casecader-menu__item {
+  font-size: 12px;
+}
+
+// radio
+.el-radio__label {
+  font-size: 12px;
+}
+
+// tag
+.el-tag {
+  padding: 0 3px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 2px;
+}
+
+// notification
+.el-notification {
+  width: 300px;
+  padding: 10px;
+}
+.el-notification__icon {
+  width: 24px;
+  height: 24px;
+  font-size: 25px;
+}
+.el-notification__group.is-with-icon {
+  margin-left: 35px;
+}
+.el-notification__title {
+  font-size: 14px;
+}
+.el-notification__content {
+  font-size: 12px;
+  word-break: break-all;
+  line-height: 15px;
+  margin: 5px 0 0;
+}
+.el-notification__closeBtn {
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+}
+
+// message
+.el-message {
+  top: 55px;
+  z-index: 2100 !important;
+}
+.el-message-box__btns {
+  .el-button {
+    float: right;
+  }
+  .el-button--primary {
+    margin-right: 10px;
+  }
+}
+
+// table
+.el-table {
+  // header 加背景颜色
+  .el-table__header thead th {
+    height: 28px;
+    border-color: #fff;
+    background-color: #ecf2fb;
+  }
+  .el-table__header thead.is-group th {
+    border-color: #fff;
+    background-color: #ecf2fb;
+  }
+  // header 不加背景颜色
+  &.no-color {
+    .el-table__header thead th {
+      background-color: #fff;
+    }
+  }
+  .el-table__body tbody tr.el-table__row--striped td {
+    background: #ECF3FB;
+  }
+  // 行高改为28px
+  .cell {
+    line-height: 28px;
+  }
+}
+// table 没有 border
+.el-table.noBorder {
+  .el-table__body tbody tr td {
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #F1F1F1;
+  }
+}
+.el-table thead {
+  color: #000;
+  font-weight: 500;
+}
+.el-table td {
+  height: 24px;
+}
+.el-table .cell, .el-table th>div {
+  padding-left: 0;
+  padding-right: 0;
+}
+.el-table td, .el-table th {
+  padding: 0 5px;
+  font-size: 12px;
+}
+.el-table th>.cell {
+  word-wrap: normal;
+  text-overflow: ellipsis;
+  line-height: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.el-table--border th:first-child .cell, .el-table--border td:first-child .cell {
+  padding-left: 0;
+}
+  
