@@ -13,9 +13,9 @@ Vue.use({
 })
 
 for(var i in cps) {
-  var cpName = i.replace(/[A-Z]/g, '-$1').toLowerCase()
+  var cpName = i.replace(/([A-Z])/g, '-$1').toLowerCase()
   if(cpName && cpName[0] === '-') {
     cpName = cpName.replace('-', '')
   }
-  Vue.component(cpName, item)
+  Vue.component(cpName, cps[i])
 }

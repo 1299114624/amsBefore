@@ -9,7 +9,7 @@ var plugins = {}
 // 全局注入api请求函数，直接调用this.$$api_module名称_method名称
 for (let i = 0; i < request.length; i++) {
   if (typeof request[i] === 'object' && request[i].list && Array.isArray(request[i].list)) {
-    for(let j = 0; j < request[i].length; j++) {
+    for(let j = 0; j < request[i].list.length; j++) {
       plugins['api_' + request[i].module + '_' +request[i].list[j].method] = (function(n, m) {
         return function({
           type = request[n].list[m].type,
@@ -42,7 +42,6 @@ for (let i = 0; i < request.length; i++) {
     }
   }
 }
-
 /**
  * @description: 通用查询配置
  * @param {Object} matchFields    查询过滤条件

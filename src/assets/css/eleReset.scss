@@ -89,6 +89,17 @@
   box-sizing: border-box;
 }
 
+.el-card.is-always-shadow {
+  -webkit-box-shadow: 0 0 0 0 rgba(0,0,0,0.1);
+}
+.el-card, .el-message {
+  border-radius: 0;
+  overflow: hidden;
+}
+.el-popover {
+  padding: 8px;
+}
+
 // checkbox
 .el-checkbox__inner {
   width: 15px;

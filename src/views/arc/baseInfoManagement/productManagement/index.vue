@@ -1,7 +1,19 @@
 <template>
   <div class="P_product P_content">
     <div class="content__search">
-      <el-button type="primary" @click="handleAddProduct('add')" class="ml-10">新增产品</el-button>
+      <!-- <el-button type="primary" @click="handleAddProduct('add')" class="ml-10">新增产品</el-button> -->
+      <form-query
+        ref="formQuery"
+        :SampleFields='sampleFields'
+        :Fields='fields'
+        :DefaultValue='defaultValue'
+        @onSubmit='onSubmit'
+      ></form-query>
+      <!-- <div>
+          <el-input
+    type='input'  
+  ></el-input>
+      </div> -->
     </div>
     <div class="content__table">
       <el-table :data="list" stripe height="100%">
@@ -49,8 +61,32 @@ export default {
   },
   data() {
     return {
-      list: [{},{},{}],
+      list: [],
+      sampleFields:[
+        {
+          type: 'input',
+          key: 'questionTitle',
+          label: '问题标题',
+          desc: '请输入',
+          attrs: {
+            clearable: true
+          }
+        }
+      ],
+      fields:[
+        {
+          type: 'input',
+          key: 'questionTitle',
+          label: '问题标题',
+          desc: '请输入',
+          attrs: {
+            clearable: true
+          }
+        }        
+      ],
+      defaultValue: {},
       showAddProduct: false,
+      loadingData: false,
       type: '',
       detail: {},
     }
@@ -59,11 +95,26 @@ export default {
     this.query()
   },
   methods: {
-    onSubmit() {
+    onSubmit(val) {
+      console.log(val)
       this.pageNumber = 1
       this.query()
     },
-    query() {},
+    query() {
+      // this.loadingData = true
+      this.$$api_product_getProductPage({
+        data: this.$$GET_COMMON_QUERY_PARAM(
+          this.queryParameters,
+          this.pageNumber,
+          this.pageSize,
+          this.sortKey,
+          this.sortType
+        ),
+        fn: data =>{
+          console.log(data)
+        }
+      })
+    },
     handleAddProduct(type, detail) {
       this.showAddProduct = true
       this.type = type
@@ -76,8 +127,5 @@ export default {
 <style lang="scss" scoped>
 .P_product {
   height: 100%;
-  .content__search {
-    line-height: 40px;
-  }
 }
 </style>

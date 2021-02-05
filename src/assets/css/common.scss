@@ -108,8 +108,8 @@ i {
 .scroll { overflow: auto; }
 // 通用
 ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
 }
 ::-webkit-scrollbar-button:vertical {
     display: none;
