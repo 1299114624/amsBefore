@@ -68,9 +68,6 @@ export default FormQueryJs
   .form-item-container {
     width: 160px;
   }
-  .sample-query {
-    padding-left: 10px;
-  }
   .main-query {
     border-top: 1px solid #dfe6ec;
     padding-bottom: 0;

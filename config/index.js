@@ -5,8 +5,8 @@ const { hostname } = require('os');
 
 const path = require('path')
 
-let hostName = "http://10.2.6.50:8090"   //冒烟环境
-// let hostName = "http://localhost:8080"
+// let hostName = "http://10.2.6.50:8090"   //冒烟环境
+let hostName = "http://localhost:8080"
 
 var port = 80;
 var _port = Number(process.argv[2]);

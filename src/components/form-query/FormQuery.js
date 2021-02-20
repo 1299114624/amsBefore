@@ -18,7 +18,12 @@ export default {
       optionalQueryHeight: 0,
       isOptionalQueryShow: false,
       components: {
-        input: 'AfInput'
+        input: 'AfInput',
+        select: 'AfSelect',
+        selectMultiple: 'AfSelectMultiple',
+        checkbox: 'AfCheckbox',
+        date: 'AfDate',
+        daterange: 'AfDateRange',
       },
     }
   },

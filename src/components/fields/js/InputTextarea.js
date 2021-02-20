@@ -1,10 +1,4 @@
 export default {
-  computed: {
-    attrs() {
-      return this.Data.attrs || {}
-    }
-  },
-
   methods: {
     onClick(e) {
       this.events.click && this.events.click(e)
