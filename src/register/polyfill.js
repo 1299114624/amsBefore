@@ -27,13 +27,6 @@ Date.prototype.Format = function(fmt) {
   return fmt
 }
 
-// 数组过滤器
-// array.filter(function(val){ return val._score >= 0.5 })
-Date.prototype.Format = function(fmt) {}
-if (!Array.prototype.filter) {
-  Array.prototype.filter = function(fun) {}
-}
-
 //去空格
 if (!String.prototype.trim) {
   String.prototype.trim = function() {

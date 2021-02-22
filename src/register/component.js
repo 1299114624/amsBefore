@@ -1,7 +1,9 @@
 import {
-  FormQuery
+  FormQuery,
+  AutoPopover,
 } from 'cps'
 
 export default {
-  FormQuery
+  FormQuery,
+  AutoPopover,
 }

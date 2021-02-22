@@ -21,7 +21,11 @@
     <div class="content__table">
       <el-table :data="list" stripe border height="100%">
         <el-table-column align="center" label="产品英文简称" prop="simpleEnglishName" min-width="150"></el-table-column>
-        <el-table-column align="center" label="产品英文全称" prop="fullEnglishName" min-width="200"></el-table-column>
+        <el-table-column align="center" label="产品英文全称" prop="fullEnglishName" min-width="200">
+          <template slot-scope="{ row }">
+            <auto-popover :popoverValue="row.fullEnglishName"></auto-popover>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="产品中文全称" prop="fullChineseName" min-width="200"></el-table-column>
         <el-table-column align="center" label="对应客户" prop="usedCompanyNames" min-width="200"></el-table-column>
         <el-table-column align="center" label="产品负责人" prop="chargeMemberNames" min-width="150"></el-table-column>
