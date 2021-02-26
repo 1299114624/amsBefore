@@ -4,6 +4,7 @@
     v-model="submit_data[data.key]"
     v-bind="attrs"
     :placeholder="data.desc"
+    :clearable="attrs.clearable || true"
     @click="onClick"
     @blur="onBlur"
     @focus="onFocus"

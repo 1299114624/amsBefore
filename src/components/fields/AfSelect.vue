@@ -3,6 +3,7 @@
     v-model="value"
     v-bind="attrs"
     :placeholder="data.desc"
+    :clearable="attrs.clearable || true"
     @change="onChange"
     @visible-change="onVisibleChange"
     @remove-tag="onRemoveTag"

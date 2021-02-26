@@ -6,11 +6,18 @@
 
  // 基础信息维护-产品管理
  import product from './baseInfo/product'
+ // 基础信息维护-组件管理
+ import component from './baseInfo/component'
 
 export default [
   {
     module: 'product',
     name: '产品管理',
     list: product
-  }
+  },
+  {
+    module: 'component',
+    name: '组件管理',
+    list: component
+  },
 ]

@@ -1,5 +1,4 @@
 export default {
-  systemInfo: {
-    
-  }
+  systemInfo: {},
+  enumDicts: [],    //数据字典
 }

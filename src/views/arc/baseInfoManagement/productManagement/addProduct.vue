@@ -6,23 +6,23 @@
       :close-on-click-modal="false"
       width="580px"
       @close="onCancel">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+      <el-form :model="form" :rules="rules" ref="form" label-width="110px">
         <el-form-item prop="simpleEnglishName" label = "产品英文简称：">
-          <el-input v-model.trim="form.simpleEnglishName" :disabled="type === 'modify'"></el-input>  
+          <el-input v-model="form.simpleEnglishName" :disabled="type === 'modify'"></el-input>  
         </el-form-item>  
         <el-form-item prop="fullEnglishName" label = "产品英文全称：">
-          <el-input v-model.trim="form.fullEnglishName"></el-input>  
+          <el-input v-model="form.fullEnglishName"></el-input>  
         </el-form-item>  
         <el-form-item prop="fullChineseName" label = "产品中文名称：">
-          <el-input v-model.trim="form.fullChineseName"></el-input>  
+          <el-input v-model="form.fullChineseName"></el-input>  
         </el-form-item>  
         <el-form-item prop="chargeMemberNames" label = "产品负责人：">
           <el-select v-model="form.chargeMemberNames" placeholder="请选择" multiple collapse-tags filterable>
-            <el-option v-for="item in chargeMemberNamesList" :label="item.label" :value="item.value" :key="item.value"></el-option>  
+            <el-option v-for="item in chargeMemberNamesList" :label="item.name" :value="item.value" :key="item.value"></el-option>  
           </el-select> 
         </el-form-item>  
         <el-form-item prop="productDesc" label = "产品介绍：">
-          <el-input v-model="form.productDesc" type="textarea" autosize></el-input>  
+          <el-input v-model="form.productDesc" type="textarea" :rows="5"></el-input>  
         </el-form-item>  
         <p class="operation">
           <el-button size="small" type="primary" :loading="loading" @click="onSubmit">确 定</el-button>  
@@ -40,7 +40,7 @@ export default {
     let checkSimpleEnglishName = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入产品英文简称'))
-      } else if (!/^[A-Za-z]+$/.test(value)) {
+      } else if (!/^[A-Za-z ]+$/.test(value)) {
         callback(new Error('请输入正确的产品英文简称，只支持输入英文字母'))        
       } else if (value.length > 10) {
         callback(new Error('产品英文简称不能超过10字符大小'))
@@ -51,7 +51,7 @@ export default {
     let checkEnglishFull = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入产品英文全称'))
-      } else if (!/^[A-Za-z]+$/.test(value)) {
+      } else if (!/^[A-Za-z ]+$/.test(value)) {
         callback(new Error('请输入正确的产品英文全称，只支持输入英文字母'))        
       } else if (value.length > 50) {
         callback(new Error('产品英文全称不能超过50字符大小'))
@@ -88,13 +88,13 @@ export default {
       },
       rules: {
         simpleEnglishName: [
-          { validator: checkSimpleEnglishName, trigger: 'blur' }
+          { required: true, validator: checkSimpleEnglishName, trigger: 'blur' }
         ],
         fullEnglishName: [
-          { validator: checkEnglishFull, trigger: 'blur' }
+          { required: true, validator: checkEnglishFull, trigger: 'blur' }
         ],
         fullChineseName: [
-          { validator: checkFullChineseName, trigger: 'blur' }
+          { required: true, validator: checkFullChineseName, trigger: 'blur' }
         ],
         productDesc: [
           { validator: checkProductDesc, trigger: 'blur' }
@@ -104,15 +104,18 @@ export default {
     }
   },
   mounted () {},
+  destroyed() {
+    this.$emit('update:isVisible', false)
+  },  
   watch: {
     isVisible(val) {
       this.show = val
       if (val) {
         this.title = this.type == 'add' ? '新增产品' : '修改产品'
-        if (this.type == 'modify') {
+        if (this.type == 'update') {
           this.form.simpleEnglishName = this.detail.simpleEnglishName
           this.form.fullEnglishName = this.detail.fullEnglishName
-          this.form.checkFullChineseName = this.detail.checkFullChineseName
+          this.form.fullChineseName = this.detail.fullChineseName
           this.form.chargeMemberNames = this.detail.chargeMemberNames ? this.detail.chargeMemberNames.split(',') : []
           this.form.productDesc = this.detail.productDesc
         }
@@ -127,9 +130,26 @@ export default {
           let params = _.cloneDeep(this.form)
           params.chargeMemberNames = this.form.chargeMemberNames.join(',')
           if (this.type == 'add') {
-
+            this.$$api_product_addProduct({
+              data: params,
+              fn: data => {
+                this.$emit('refresh')
+                this.$$SuccessMessage('新增成功！')
+                this.onCancel()
+                this.loading = false
+              }
+            })
           } else {
-
+            params.id = this.detail.id
+            this.$$api_product_updateProduct({
+              data: params,
+              fn: data => {
+                this.$emit('refresh')
+                this.$$SuccessMessage('修改成功！')
+                this.onCancel()
+                this.loading = false
+              }
+            })
           }
         }
       })

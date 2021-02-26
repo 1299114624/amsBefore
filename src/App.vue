@@ -6,7 +6,11 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    this.$store.dispatch('enumDicts_load')
+    this.$store.dispatch('getEnum')
+  }
 }
 </script>
 

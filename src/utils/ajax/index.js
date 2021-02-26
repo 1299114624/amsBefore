@@ -47,7 +47,6 @@ export default async function({
   headers,
   opts
 } = {}) {
-
   let options = {
     method: type,
     url: path,

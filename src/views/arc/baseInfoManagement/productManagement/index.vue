@@ -1,7 +1,6 @@
 <template>
   <div class="P_product P_content">
     <div class="content__search">
-      <!-- <el-button type="primary" @click="handleAddProduct('add')" class="ml-10">新增产品</el-button> -->
       <form-query
         ref="formQuery"
         :SampleFields='sampleFields'
@@ -10,8 +9,8 @@
         @onSubmit='onSubmit'
       >
         <template slot="prefix">
-          <el-button class="ml-10" type="primary">新增</el-button>
-          <el-button class="mr-10">删除</el-button>
+          <el-button class="ml-10" type="primary" @click="handleAdd">新增产品</el-button>
+          <el-button class="mr-10" type="danger" @click="deleteConfirm" :disabled="selectIds.length == 0" plain>删除</el-button>
         </template>
         <el-button slot="suffix" type="text" @click="handleExport">
           <i class="iconfont icon-daochu"></i>导出
@@ -19,7 +18,9 @@
       </form-query>
     </div>
     <div class="content__table">
-      <el-table :data="list" stripe border height="100%">
+      <el-table :data="list" stripe border height="100%" :default-sort="{prop:'updateTime',order:'ascending'}" v-loading="loadingData" 
+      :empty-text="emptyText" @selection-change="handleSelectionChange" @sort-change="tablesort">
+        <el-table-column type="selection" width="27"></el-table-column>
         <el-table-column align="center" label="产品英文简称" prop="simpleEnglishName" min-width="150"></el-table-column>
         <el-table-column align="center" label="产品英文全称" prop="fullEnglishName" min-width="200">
           <template slot-scope="{ row }">
@@ -27,14 +28,14 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="产品中文全称" prop="fullChineseName" min-width="200"></el-table-column>
-        <el-table-column align="center" label="对应客户" prop="usedCompanyNames" min-width="200"></el-table-column>
-        <el-table-column align="center" label="产品负责人" prop="chargeMemberNames" min-width="150"></el-table-column>
+        <el-table-column align="center" label="对应客户" prop="usedCompanyNames" min-width="150"></el-table-column>
+        <el-table-column align="center" label="产品负责人" prop="chargeMemberNames" min-width="110"></el-table-column>
         <el-table-column align="center" label="产品介绍" prop="productDesc" min-width="250"></el-table-column>
-        <el-table-column align="center" label="创建时间" prop="addTime" min-width="150"></el-table-column>
-        <el-table-column align="center" label="最新修改时间" prop="updateTime" min-width="150"></el-table-column>
-        <el-table-column label="操作" fixed="right" width="180">
+        <el-table-column align="center" label="创建时间" prop="addTime" min-width="130"></el-table-column>
+        <el-table-column align="center" label="最新修改时间" prop="updateTime" min-width="130" sortable="custom"></el-table-column>
+        <el-table-column label="操作" fixed="right" width="120" header-align="center" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleModifyProduct('modify',scope.row)">修改</el-button>
+            <el-button type="text" @click="handleUpdate(scope.row)">修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -53,7 +54,7 @@
       :isVisible.sync="showAddProduct"
       :type="type"  
       :detail="detail"  
-      @refresh="onSubmit"
+      @refresh="refresh"
     ></addProduct>
   </div>
 </template>
@@ -61,6 +62,7 @@
 <script>
 import { baseTableMixin, resizeMixin } from 'mixins'
 import addProduct from './addProduct'
+import {getPageNumber} from 'utils/utils/index.js'
 export default {
   mixins: [baseTableMixin, resizeMixin],
   components: {
@@ -72,78 +74,18 @@ export default {
       sampleFields:[
         {
           type: 'input',
-          key: 'questionTitle',
-          label: '问题标题：',
+          key: 'simpleEnglishName',
+          label: '产品英文简称：',
           desc: '请输入',
           attrs: {
             clearable: true
           }
         },
-        {
-          type: 'select',
-          key: 'groupIds',
-          label: '负责小组：',
-          desc: '请选择',
-          custom_attrs: {label:'name1',value:'value'},
-          list: [
-            {name1: '叶硕强',value: "1"},
-            {name1: '李廷',value: "2"},
-            {name1: '魏伯阳',value: "3"},
-          ],
-          attrs: {
-            filterable: true
-          }
-        },
-        {
-          type: 'selectMultiple',
-          key: 'groupMul',
-          label: '负责小组：',
-          desc: '请选择',
-          custom_attrs: {label:'name1',value:'value'},
-          list: [
-            {name1: '叶硕强',value: "1"},
-            {name1: '李廷',value: "2"},
-            {name1: '魏伯阳',value: "3"},
-          ],
-          attrs: {
-            filterable: true,
-            'collapse-tags': true
-          }
-        },
       ],
-      fields:[      
-        {
-          type: 'checkbox',
-          key: 'checkbox',
-          label: 'checkbox组件',
-          list: [
-            {name:'深圳',value:'1'},
-            {name:'北京',value:'2'},
-            {name:'上海',value:'3'},
-          ]
-        },    
-        {
-          type: 'date',
-          key: 'date',
-          label: 'date组件：',
-          desc: '请输入',
-          attrs: {
-            'unlink-panels': true,
-            'value-format': 'yyyy-MM-dd'
-          }
-        },            
-        {
-          type: 'daterange',
-          key: 'daterange',
-          label: 'daterange组件：',
-          desc: '请输入',
-          attrs: {
-            'unlink-panels': true,
-            'value-format': 'yyyy-MM-dd'
-          }
-        },            
+      fields:[                
       ],
       defaultValue: {},
+      selectIds: [],
       showAddProduct: false,
       loadingData: false,
       type: '',
@@ -156,6 +98,11 @@ export default {
   methods: {
     onSubmit(val) {
       console.log(val)
+      this.queryParameters = val.data
+      this.pageNumber = 1
+      this.query()
+    },
+    refresh() {
       this.pageNumber = 1
       this.query()
     },
@@ -176,12 +123,50 @@ export default {
         }
       })
     },
-    handleAddProduct(type, detail) {
+    handleAdd() {
       this.showAddProduct = true
-      this.type = type
+      this.type = 'add'
+    },
+    handleUpdate(detail) {
+      this.showAddProduct = true
+      this.type = 'update'
       this.detail = detail
     },
     handleExport(){},
+    handleSelectionChange(val) {
+      this.selectIds = val
+    },
+    deleteConfirm() {
+      this.$confirm('确定删除吗?', "提示", {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let ids = []
+        for (let i = 0; i <= this.selectIds.length - 1; i++) {
+          ids.push(this.selectIds[i].id)
+        }
+        this.$$api_product_deleteProduct({
+          data: ids,
+          fn: data =>{
+            this.$$SuccessMessage('删除成功！')
+            this.pageNumber = getPageNumber({
+              list: this.list,
+              deleteList: this.selectIds,
+              totalCount: this.totalCount,
+              pageNumber: this.pageNumber,
+              pageSize: this.pageSize
+            })
+            this.query()
+          }
+        })        
+      })
+    },
+    tablesort(column) {
+      this.sortKey = column.prop
+      this.sortType = column.order
+      this.query()
+    }
   }
 }
 </script>

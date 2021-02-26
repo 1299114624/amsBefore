@@ -15,6 +15,9 @@ const gbs = {
     // 本地存储的 prefix key
     db_prefix: 'af_',
 
+    // 数据字典唯一字段名称
+    enumDicts_key_field: 'code',
+
     // 状态码字段
     api_status_key_field: 'code',
     // 状态码value
