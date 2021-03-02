@@ -1,5 +1,11 @@
 export default [
   {
+    name: '分页所有产品List',
+    method: 'getProductList',
+    path: '/product/list',
+    type: 'post'
+  },
+  {
     name: '分页查询所有产品',
     method: 'getProductPage',
     path: '/product/page',

@@ -10,8 +10,8 @@ var STANDARD_IMPORT = {
     functionManagement: 'views/arc/baseInfoManagement/functionManagement',
     // 基础信息维护-产品管理
     productManagement: 'views/arc/baseInfoManagement/productManagement',
-    // 基础信息维护-客制产品管理
-    clientProductManagement: 'views/arc/baseInfoManagement/clientProductManagement',
+    // 基础信息维护-客户管理
+    companyManagement: 'views/arc/baseInfoManagement/companyManagement',
     // 系统异常页面
     NotPermission: 'views/exception/403.vue',
     NotFound: 'views/exception/404.vue',
