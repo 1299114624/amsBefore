@@ -23,9 +23,10 @@
               node-key="name"
               :expand-on-click-node="false"
               :props="treeProps"
+              @node-click="handleNodeClick"
             >
               <span class="info__tree-node" slot-scope="{ node, data }">
-                <span class="node__label" :class="{'group__node': data.type== 2}">
+                <span class="node__label" :class="{'group__node': data.node.groupName}">
                   {{ data.name }}
                 </span>
                 <template v-if="data.node.companyNames">
@@ -33,10 +34,10 @@
                 </template>
                 <template>
                   <div class="tree-icons">
-                    <i class="el-icon-plus f-16 ml-10" v-if="data.type== 2" @click="handleAddNode"></i>
+                    <i class="el-icon-plus f-16 ml-10" v-if="data.node.groupName" @click.stop="handleAddNode(data, node)"></i>
                     <template v-if="data.parentCode != '0'">
-                      <i class="el-icon-edit f-16 ml-10" @click="handleEditNode(data, node)"></i>
-                      <i class="el-icon-close f-16 ml-10" @click="handleDeleteNode(data, node)"></i>
+                      <i class="el-icon-edit f-16 ml-10" @click.stop="handleEditNode(data, node)"></i>
+                      <i class="el-icon-close f-16 ml-10" @click.stop="handleDeleteNode(data, node)"></i>
                     </template>
                   </div>
                 </template>
@@ -45,17 +46,33 @@
           </div>
         </div>
       </div>
+      <div class="rightContent">
+        <addFuncOrGroup v-if="type =='addFuncOrGroup' || type =='updateGroup' || type =='updateFunction'" 
+        :type="type" :selectedNode="selectedNode" :treeList="treeList" @refresh="refresh" @close="close"></addFuncOrGroup>
+        <functionDetail v-if="type =='functionDetail'" :selectedNode="selectedNode"></functionDetail>
+        <groupDetail v-if="type =='groupDetail'" :selectedNode="selectedNode"></groupDetail>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import addFuncOrGroup from './addFuncOrGroup/addFuncOrGroup'
+import functionDetail from './addFuncOrGroup/func/functionDetail'
+import groupDetail from './addFuncOrGroup/group/groupDetail'
 export default {
+  components: {
+    addFuncOrGroup,
+    functionDetail,
+    groupDetail,
+  },
   data() {
     return {
       filterText: "",
       loading: false,
       treeData: [],
+      selectedNode: {},
+      type: '',
       treeProps: {
         children: 'children',
         label: 'name'
@@ -76,9 +93,101 @@ export default {
           this.sortType
         ),
         fn: data =>{
+          this.treeData = data
+          this.treeList = this.getTreeList(data)
         }
       })      
-    }
+    },
+    handleNodeClick(data, node) {
+      this.selectedNode = data  
+      if (data.node.groupName) {
+        this.type = 'groupDetail'      
+      } else {
+        this.type = 'functionDetail'              
+      }      
+    },
+    handleAddNode(data, node) {
+      this.selectedNode = data
+      this.type = 'addFuncOrGroup'
+    },
+    handleEditNode(data, node) {
+      this.selectedNode = data
+      if (data.node.groupName) {
+        this.type = 'updateGroup'      
+      } else {
+        this.type = 'updateFunction'              
+      }
+    },
+    handleDeleteNode(data, node) {
+      if (data.node.groupName) {
+        this.handleDeleteGroup(data)      
+      } else {
+        this.handleDeleteFunction(data)               
+      }      
+    },
+    handleDeleteGroup(data) {
+      if (data.children && data.children.length > 0) {
+        this.$ErrorMessage("请先删除分组下所有的分组及功能！")
+        return
+      }
+      this.$confirm("确认删除该分组吗？", '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$$api_functionGroup_deleteFunctionGroup({
+          restParam: {
+            id: data.node.id
+          },
+          fn: data =>{
+            this.refresh()
+            this.$$SuccessMessage("删除成功！")
+          }
+        })         
+      })
+    },
+    handleDeleteFunction(data) {
+      this.$confirm('确认删除该功能吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$$api_functionGroup_deleteFunction({
+          restParam: {
+            id: data.node.id
+          },
+          fn: data =>{
+            this.refresh()
+            this.$$SuccessMessage("删除成功！")
+            this.$message({
+              showClose: true,
+              type: 'success',
+              message: '删除成功'
+            })
+          }
+        })         
+      })
+    },
+    getTreeList(data) {
+      let treeList = []
+      function getDeepTree(data) {
+        data.forEach(v => {
+          treeList = treeList.concat(v)
+          if(v.children) {
+            getDeepTree(v.children)
+          }
+        })
+      }
+      getDeepTree(data)
+      return treeList
+    },
+    refresh() {
+      this.close()
+      this.query()
+    },
+    close() {
+      this.type = ''
+    },
   }
 }
 </script>
@@ -112,10 +221,40 @@ $--color-gray: #ddd !default;
         height: calc(100% - 34px);
         .content__info {
           margin-left: 20px;
+          .info__tree-node {
+            width: 100%;
+            &:hover {
+              background: #eef9fe;
+              .tree-icons {
+                visibility: visible;
+              }
+            }
+            .node__label {
+              flex: 1;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-size: 14px;
+              color: rgb(62, 61, 61);
+              &.group__node {
+                color: rgb(119, 121, 153);
+              }
+            }
+            .tree-icons {
+              visibility: hidden;
+              display: inline-block;
+              .el-icon-plus, .el-icon-edit {
+                color: #409eff;
+              }
+              .el-icon-close {
+                color: #fe5050;
+              }
+            }
+          }
         }
       }
     }
-    .righrContent {
+    .rightContent {
       flex: 1;
     }
   }

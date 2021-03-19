@@ -48,5 +48,17 @@ export default {
       })
       return data
     }
-  }
+  },
+  getUserNameById(state, getters) {
+    return userId => {
+      let userList = state.userList
+      let data = ''
+      userList.forEach(item => {
+        if (userId === item.id) {
+          data = _.cloneDeep(item.realName)
+        }
+      })
+      return data
+    }
+  },
 }

@@ -24,7 +24,11 @@
         <el-table-column align="center" label="公司全称" prop="companyName" sortable="custom" min-width="140"></el-table-column>
         <el-table-column align="center" label="公司简称" prop="simpleCompanyName"></el-table-column>
         <el-table-column align="center" label="公司英文名称" prop="englishCompanyName" min-width="180"></el-table-column>
-        <el-table-column align="center" label="已选产品" prop="products"></el-table-column>
+        <el-table-column align="center" label="已选产品" prop="productNames">
+          <template slot-scope="{ row }">
+            <auto-popover :popoverValue="row.productNames"></auto-popover>
+          </template>                
+        </el-table-column>
         <el-table-column align="center" label="备注" prop="description">
           <template slot-scope="{ row }">
             <auto-popover :popoverValue="row.description"></auto-popover>

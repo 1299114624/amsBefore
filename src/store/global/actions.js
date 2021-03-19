@@ -1,7 +1,7 @@
 import * as types from './mutation_types'
 import {ajax, store} from 'utils'
 import {gbs} from 'config'
-import {getAllDicts as apiDicts, getServerOsInfo as serverInfo, getSystemInfo as systemInfo} from 'apis/global/index'
+import {getAllDicts as apiDicts, getServerOsInfo as serverInfo, getSystemInfo as systemInfo, getAllUser as userList} from 'apis/global/index'
 export default {
   // 加载字典
   enumDicts_load: ({commit}) => {
@@ -50,5 +50,19 @@ export default {
         resolve(getEnumData(state.enumDicts, key))
       }
     })
-  }
+  },
+  // 获取用户信息
+  getUserList: ({commit}) => {
+    return new Promise(resolve => {
+      ajax({
+        path: userList.path,
+        type: userList.type,
+        fn: data => {
+          data.forEach(v => v.id+='')
+          commit(types.USERLIST_UPDATE, data)    // 更新到 vuex
+          resolve()
+        }
+      })      
+    })
+  },
 }

@@ -16,5 +16,11 @@ export const getSystemInfo = {
   path: '/system/info',
   type: 'post',
 }
+export const getAllUser = {
+  name: '获取所有用户',
+  method: 'getAllUser',
+  path: '/user/list',
+  type: 'post',
+}
 
-export const list = [getAllDicts, getServerOsInfo, getSystemInfo]
+export const list = [getAllDicts, getServerOsInfo, getSystemInfo, getAllUser]

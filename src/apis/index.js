@@ -3,11 +3,10 @@
  * 一级属性：模块名
  * 一级属性中的方法：当前模块需要用的接口
  */
-
 // 基础信息维护-组件管理
 import component from './baseInfo/component'
 // 基础信息维护-功能管理
-import functionGroup from './baseInfo/function'
+import functionGroup from './baseInfo/functionGroup'
  // 基础信息维护-产品管理
  import product from './baseInfo/product'
  // 基础信息维护-客户管理

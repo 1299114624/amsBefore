@@ -16,8 +16,8 @@
         <el-form-item prop="englishCompanyName" label = "公司英文名称：">
           <el-input v-model="form.englishCompanyName"></el-input>  
         </el-form-item>         
-        <el-form-item prop="productList" label = "所需产品：">
-          <el-checkbox-group v-model="form.productList">
+        <el-form-item prop="productIdList" label = "所需产品：">
+          <el-checkbox-group v-model="form.productIdList">
             <el-checkbox
               v-for="(item,index) in allProducts"
               :key="index"
@@ -90,7 +90,7 @@ export default {
         companyName: '',
         simpleCompanyName: '',
         englishCompanyName: '',
-        productList: [],
+        productIdList: [],
         description: '',
       },
       rules: {
@@ -117,7 +117,7 @@ export default {
           this.form.companyName = this.detail.companyName
           this.form.simpleCompanyName = this.detail.simpleCompanyName
           this.form.englishCompanyName = this.detail.englishCompanyName
-          this.form.productList = this.detail.productList ? this.detail.productList.split(',') : []
+          this.form.productIdList = this.detail.products ? this.detail.products.map(v => {return v.id}) : []
           this.form.description = this.detail.description
         }
         this.getProductList()
@@ -138,6 +138,10 @@ export default {
                 this.$$SuccessMessage('新增成功！')
                 this.onCancel()
                 this.loading = false
+              },
+              errFn: error => {
+                this.$$ErrorMessage(error.msg)
+                this.loading = false
               }
             })
           } else {
@@ -149,7 +153,11 @@ export default {
                 this.$$SuccessMessage('修改成功！')
                 this.onCancel()
                 this.loading = false
-              }
+              },
+              errFn: error => {
+                this.$$ErrorMessage(error.msg)
+                this.loading = false
+              }              
             })
           }
         }
@@ -162,7 +170,7 @@ export default {
         companyName: '',
         simpleCompanyName: '',
         englishCompanyName: '',
-        productList: [],
+        productIdList: [],
         description: '',
       }
     },

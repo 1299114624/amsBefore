@@ -6,6 +6,12 @@ export default [
     type: 'post'
   },
   {
+    name: '不分页查询所有组件',
+    method: 'getCompanyList',
+    path: '/company/list',
+    type: 'post'
+  },
+  {
     name: '新增组件',
     method: 'addCompany',
     path: '/company/add',
