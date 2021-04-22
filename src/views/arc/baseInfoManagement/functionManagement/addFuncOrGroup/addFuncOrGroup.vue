@@ -8,13 +8,13 @@
       <div class="detail-inner">
         <div class="detail-type">所属类别：<span>{{ selectedNode.name }}</span></div>
         <el-radio-group v-model="radio" size="mini" v-if="type=='addFuncOrGroup'">
-          <el-radio-button v-if="showFunction" label="0">功能</el-radio-button>
-          <el-radio-button v-if="selectedNode.node.groupName && showGroup" label="1">分组</el-radio-button>
+          <el-radio-button v-if="addType == 0 || addType == 2" label="0">功能</el-radio-button>
+          <el-radio-button v-if="addType == 1 || addType == 2" label="1">分组</el-radio-button>
         </el-radio-group>
       </div>
       <div class="detail-content">
-        <addFunction v-show="radio=='0'" :radio="radio" :type="type" :selectedNode="selectedNode" @refresh="refresh" @close="close"></addFunction>
-        <addGroup v-show="radio=='1'" :radio="radio" :type="type" :selectedNode="selectedNode" @refresh="refresh" @close="close"></addGroup>
+        <addFunction v-if="radio==0" :radio="radio" :type="type" :selectedNode="selectedNode" @refresh="refresh" @close="close"></addFunction>
+        <addGroup v-if="radio==1" :radio="radio" :type="type" :selectedNode="selectedNode" @refresh="refresh" @close="close"></addGroup>
       </div>
     </div>
   </div>
@@ -35,41 +35,51 @@ export default {
       radio: null,
       showFunction: true,
       showGroup: true,
+      addType: '',
       title: '新增功能/分组',
     }
   },
   watch: {
-    type(val) {
-      this.selectType(val)
+    selectedNode() {
+      this.checkAddType()
+    },
+    type() {
+      this.checkAddType()
     }
   },
   mounted () {
-    this.selectType(this.type)
+    this.checkAddType()
   },
   methods: {
-    selectType(val) {
-      if(val == 'updateGroup') {
+    checkAddType() {
+      if(this.type == 'updateGroup') {
         this.title = '修改分组'
         this.radio = 1
-      } else if (val == 'updateFunction') {
+      } else if (this.type == 'updateFunction') {
         this.title = '修改功能'
         this.radio = 0
       } else {
-        this.title = '新增功能/分组'
-        this.radio = 0
-      }      
+        this.$$api_functionGroup_checkAddType({
+          restParam: {
+            id: this.selectedNode.node.id
+          },
+          fn: data => {
+            this.addType = data
+            switch (this.addType) {
+              case 0: // 只能加功能
+                this.radio = 0  
+                break
+              case 1: // 只能加分组
+                this.radio = 1  
+                break
+              case 2: // 能加功能获分组
+                this.radio = 0  
+                break
+            }
+          },             
+        })
 
-      // 如果child里有function则只能增加function,如果child里有group则只能增加group,
-      let arr = this.treeList.filter(v=>{
-        return v.parentCode == this.selectedNode.code
-      })
-      if(arr.length>0 && arr.find(v => v.node.groupName)) {
-        this.showFunction = false
-        this.radio = 1
-      } else if(arr.length>0 && arr.find(v => v.node.functionName)) {
-        this.showGroup = false
-        this.radio = 0
-      }
+      }   
     },
     toggleHidden() {
       this.hidden = !this.hidden

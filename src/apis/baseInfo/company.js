@@ -29,4 +29,10 @@ export default [
     path: '/company/deleteBatch',
     type: 'post'
   },
+  {
+    name: '删除组件',
+    method: 'getComByProduct',
+    path: '/companyComponent/getComByProduct',
+    type: 'post'
+  },
 ]

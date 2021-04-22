@@ -2,12 +2,13 @@
  * 基础信息维护路由
  */
 import { Content } from 'layout/';
-import { componentManagement, functionManagement, productManagement, companyManagement } from '../import';
+import { componentManagement, functionManagement, productManagement, companyManagement, companyManagementDetail } from '../import';
 export default {
     path: 'baseInfoManagement',
     name: 'baseInfoManagement',
     meta: {
         alias: '基础信息维护',
+        noGroup: true,
     },
     component: Content,
     children: [
@@ -46,6 +47,16 @@ export default {
                 parentName: 'baseInfoManagement'
             },
             component: companyManagement,            
+        },
+        {
+            path: 'companyManagementDetail',
+            name: 'companyManagementDetail',
+            hidden: true,
+            meta: {
+                alias: '客户管理详情',
+                parentName: 'companyManagement'
+            },
+            component: companyManagementDetail,            
         },
     ]
 }

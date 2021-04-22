@@ -8,12 +8,13 @@ export default {
       totalCount: 0,              // 总条数
       paginationLayout: 'total, sizes, prev, pager, next, jumper',
       sortKey: '',                // 排序关键字
-      sortType: ''                // 排序类型
+      sortType: '',                // 排序类型
     }
   },
   methods: {
     // 每条页数改变
     handleSizeChange (val) {
+      this.pageNumber = 1
       this.pageSize = val
       this.query()
     },

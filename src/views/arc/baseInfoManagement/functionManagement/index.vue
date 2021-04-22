@@ -23,6 +23,7 @@
               node-key="name"
               :expand-on-click-node="false"
               :props="treeProps"
+              :filter-node-method="filterNode"
               @node-click="handleNodeClick"
             >
               <span class="info__tree-node" slot-scope="{ node, data }">
@@ -82,6 +83,11 @@ export default {
   mounted() {
     this.query()
   },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val)
+    }
+  },
   methods: {
     query() {
       this.$$api_functionGroup_getFunctionGroupTree({
@@ -98,25 +104,25 @@ export default {
         }
       })      
     },
-    handleNodeClick(data, node) {
-      this.selectedNode = data  
+    handleNodeClick(data, node) {      
       if (data.node.groupName) {
         this.type = 'groupDetail'      
       } else {
         this.type = 'functionDetail'              
-      }      
+      }     
+      this.selectedNode = data   
     },
     handleAddNode(data, node) {
-      this.selectedNode = data
       this.type = 'addFuncOrGroup'
+      this.selectedNode = data
     },
     handleEditNode(data, node) {
-      this.selectedNode = data
       if (data.node.groupName) {
         this.type = 'updateGroup'      
       } else {
         this.type = 'updateFunction'              
       }
+      this.selectedNode = data
     },
     handleDeleteNode(data, node) {
       if (data.node.groupName) {
@@ -127,7 +133,7 @@ export default {
     },
     handleDeleteGroup(data) {
       if (data.children && data.children.length > 0) {
-        this.$ErrorMessage("请先删除分组下所有的分组及功能！")
+        this.$$ErrorMessage("请先删除分组下所有的分组及功能！")
         return
       }
       this.$confirm("确认删除该分组吗？", '提示', {
@@ -159,11 +165,6 @@ export default {
           fn: data =>{
             this.refresh()
             this.$$SuccessMessage("删除成功！")
-            this.$message({
-              showClose: true,
-              type: 'success',
-              message: '删除成功'
-            })
           }
         })         
       })
@@ -180,6 +181,10 @@ export default {
       }
       getDeepTree(data)
       return treeList
+    },
+    filterNode(value, data) {
+      if (!value) return true
+      return (data.name.indexOf(value) !== -1) || (data.code.indexOf(value) !== -1)
     },
     refresh() {
       this.close()
@@ -211,7 +216,7 @@ $--color-gray: #ddd !default;
     height: calc(100% - 53px);
     display: flex;
     .leftContent {
-      width: 30%;
+      width: 40%;
       .functionTitle {
         font-size: 16px;
         padding: 6px;
@@ -219,6 +224,14 @@ $--color-gray: #ddd !default;
       }
       .el-scrollbar {
         height: calc(100% - 34px);
+        overflow: hidden;
+        &:hover,
+        &:active,
+        &:focus {
+          opacity: 1;
+          transition: opacity 340ms ease-out;
+          overflow-y: scroll;
+        }      
         .content__info {
           margin-left: 20px;
           .info__tree-node {

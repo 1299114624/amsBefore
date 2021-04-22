@@ -37,7 +37,7 @@
           </el-select> 
         </el-form-item>           
         <el-form-item prop="description" label = "功能描述：">
-          <el-input v-model="form.description" placeholder="请输入" type="textarea" :rows="5"></el-input>  
+          <el-input v-model="form.description" placeholder="请输入" type="textarea" :rows="4"></el-input>  
         </el-form-item>
       </div>
     </el-form>  
@@ -83,6 +83,7 @@ export default {
   },
   watch: {
     selectedNode() {
+      this.$refs.form.resetFields()
       this.init()
     },
   },

@@ -7,7 +7,7 @@
       <div class="detail-title">功能分组详情</div>
       <div class="detail-inner">
         <p>分组名称：{{this.selectedNode.node.groupName}}</p>
-        <div class="flexbox"><div style="min-width:60px">分组描述：</div><el-input v-model="this.selectedNode.node.groupDesc" class="remark" type="textarea" :rows="5" disabled></el-input></div>
+        <div class="flexbox"><div style="min-width:60px">分组描述：</div><el-input v-model="this.selectedNode.node.groupDesc" class="remark" type="textarea" :rows="4" disabled></el-input></div>
       </div>
     </div>
   </div>

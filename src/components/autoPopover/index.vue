@@ -55,7 +55,6 @@ export default {
   props: {
     //必传，即使使用slot。需监听数据变化，根据变化来重新计算宽度，比如表格翻页，如不重新计算，后一页相同位置的计算宽度不会更新
     popoverValue: {
-      type: String,
       required: true,
     },
     //行数
@@ -114,6 +113,13 @@ export default {
       immediate: true,
       deep: true,
       async handler(value) {
+        if(value == null) {
+          value = ''
+        } else if (Array.isArray(value)) {
+          value = value.join(',')
+        } else {
+          value = value
+        }
         await this.$nextTick()
         this.calculateWidth()
       }

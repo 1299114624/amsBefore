@@ -12,6 +12,12 @@ export default [
     type: 'post'
   },
   {
+    name: '分页查询所有产品',
+    method: 'getProductListByCompanyId',
+    path: '/product/listByCompanyId/:id',
+    type: 'post'
+  },
+  {
     name: '新增产品',
     method: 'addProduct',
     path: '/product/add',

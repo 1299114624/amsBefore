@@ -137,7 +137,11 @@ export default {
                 this.$$SuccessMessage('新增成功！')
                 this.onCancel()
                 this.loading = false
-              }
+              },
+              errFn(err) {
+                this.loading = false
+                this.$$ErrorMessage(err.msg)
+              }                
             })
           } else {
             params.id = this.detail.id
@@ -148,7 +152,11 @@ export default {
                 this.$$SuccessMessage('修改成功！')
                 this.onCancel()
                 this.loading = false
-              }
+              },
+              errFn(err) {
+                this.loading = false
+                this.$$ErrorMessage(err.msg)
+              }                
             })
           }
         }

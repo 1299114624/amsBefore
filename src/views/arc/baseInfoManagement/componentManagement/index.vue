@@ -35,11 +35,18 @@
             <auto-popover :popoverValue="row.description"></auto-popover>
           </template>           
         </el-table-column>
-        <el-table-column align="center" label="组件类型" prop="componentTypeName"></el-table-column>
+        <el-table-column align="center" label="组件类型" prop="componentTypeCn"></el-table-column>
         <el-table-column align="center" label="所属客户" prop="companyNames"></el-table-column>
-        <el-table-column align="center" label="被引用客户" prop="usedCompanyNames" min-width="95"></el-table-column>
-        <el-table-column align="center" label="被引用功能" prop="functionNames" min-width="95"></el-table-column>
-        <el-table-column align="center" label="组件负责人" prop="chargeman" min-width="95"></el-table-column>        
+        <el-table-column align="center" label="被引用功能" prop="functionNames" min-width="95">
+          <template slot-scope="{ row }">
+            <auto-popover :popoverValue="row.functionNames"></auto-popover>
+          </template>           
+        </el-table-column>
+        <el-table-column align="center" label="组件负责人" prop="chargeman" min-width="95">
+          <template slot-scope="{ row }">
+            <auto-popover :popoverValue="row.chargeman"></auto-popover>
+          </template>              
+        </el-table-column>        
         <el-table-column align="center" label="设计文档SVN地址" prop="designSvnAddress" min-width="130"></el-table-column>
         <el-table-column align="center" label="需求文档SVN地址" prop="requireSvnAddress" min-width="130"></el-table-column>
         <el-table-column align="center" label="创建时间" prop="addTime" min-width="130"></el-table-column>

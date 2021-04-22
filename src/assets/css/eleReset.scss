@@ -52,13 +52,95 @@
   font-size: 12px;
 }
 
-// menu
-.el-menu-item * {
-  vertical-align: initial;
+// scrollbar 
+// .el-scrollbar {
+//   height: 100%;
+//   // overflow-y: scroll;
+//   // overflow: hidden;
+//   // &:hover,
+//   // &:active,
+//   // &:focus {
+//   //   opacity: 1;
+//   //   transition: opacity 340ms ease-out;
+//   //   overflow-y: scroll;
+//   // }  
+// }
+.scrollbar_thin {
+  &::-webkit-scrollbar {
+    width: 1px;
+    height: 1px;
+  }
+  &::-webkit-scrollbar-button:vertical {
+    display: none;
+  }
+  &::-webkit-scrollbar-track-piece {
+    background: #000;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #6c6e71;
+  }
 }
-.el-submenu .el-submenu__title {
-  height: 40px;
-  line-height: 40px;
+
+// menu
+.el-menu {
+  .el-menu-item * {
+    vertical-align: initial;
+  }
+  .el-menu-item {
+    height: 30px;
+    width: 100%;
+    line-height: 30px;
+    font-size: 12px;
+    &.is-sctive {
+      border-right: 2px solid #409eff;
+      background-color: #ecf5ff;
+    }
+  }
+  .el-submenu {
+    color: #939ebd;
+    font-size: 14px;
+    .el-submenu__title {
+      height: 30px;
+      line-height: 30px;
+    }
+    .groupName { // 二级菜单下auto-popover需要加的类名
+      width: 120px;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: -5px;
+    }
+    .groupNameChild { // 三级菜单下auto-popover需要加的类名
+      width: 95px;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: -5px;
+    }
+    .edit_delete {
+      position: absolute; 
+      right: 0;
+      .el-button {
+        padding: 0;
+        margin: -3px -2px 0px -2px;
+        i {
+          margin: 0;
+          margin-top: -6px;
+          font-size: 12px;
+          cursor: pointer;
+        }
+        &.is-buildIn {
+          margin-left: -47px;
+        }
+      }
+    }
+  }
 }
 
 // date

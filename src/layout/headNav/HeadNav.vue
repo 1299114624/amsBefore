@@ -118,9 +118,10 @@ export default {
           item.meta.hasLeaf = true
           let groupedChildren = {}
           let newChildren = []
-          if(_.findIndex(item.children,"groupName")==-1) {
+          if(item.meta.noGroup) {
             // 不分组的情况
-            newChildren.push(item.children)
+            let filterChildren = item.children.filter(v => !v.hidden)
+            newChildren.push(filterChildren)
           } else {
             groupedChildren = _.groupBy(item.children,"groupName");
             for(const key in groupedChildren) {

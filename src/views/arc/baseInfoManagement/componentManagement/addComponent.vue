@@ -33,7 +33,7 @@
         </el-form-item>
         <el-form-item prop="chargeman" label = "组件负责人：">
           <el-select v-model="form.chargeman" style="width:180px" placeholder="请选择" multiple collapse-tags filterable>
-            <el-option v-for="item in chargemanList" :label="item.name" :value="item.value" :key="item.value"></el-option>  
+            <el-option v-for="item in userList" :label="item.realName" :value="item.realName" :key="item.id"></el-option>  
           </el-select> 
         </el-form-item>  
         <el-form-item prop="languageType" label = "开发语言：">
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: ['isVisible', 'type', 'detail'],
   data () {
@@ -110,6 +111,11 @@ export default {
       languageTypeList: [],
     }
   },
+  computed: {
+    ...mapState({
+      userList: state => state.global.userList
+    })
+  },  
   mounted () {
     this.languageTypeList = this.GetListEnum("LanguageType")
   },
@@ -150,6 +156,10 @@ export default {
                 this.$$SuccessMessage('新增成功！')
                 this.onCancel()
                 this.loading = false
+              },
+              errFn(err) {
+                this.loading = false
+                this.$$ErrorMessage(err.msg)
               }
             })
           } else {
@@ -161,7 +171,11 @@ export default {
                 this.$$SuccessMessage('修改成功！')
                 this.onCancel()
                 this.loading = false
-              }
+              },
+              errFn(err) {
+                this.loading = false
+                this.$$ErrorMessage(err.msg)
+              }              
             })
           }
         }

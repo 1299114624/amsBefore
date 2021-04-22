@@ -6,7 +6,7 @@
           <el-input v-model="form.groupName" placeholder="请输入"></el-input>  
         </el-form-item>  
         <el-form-item prop="groupDesc" label = "分组描述：">
-          <el-input v-model="form.groupDesc" placeholder="请输入" type="textarea" :rows="5"></el-input>  
+          <el-input v-model="form.groupDesc" placeholder="请输入" type="textarea" :rows="4"></el-input>  
         </el-form-item>
       </div>
     </el-form>  
@@ -34,6 +34,7 @@ export default {
   },
   watch: {
     selectedNode() {
+      this.$refs.form.resetFields()
       this.form = {
         groupName: '',
         groupDesc: '',

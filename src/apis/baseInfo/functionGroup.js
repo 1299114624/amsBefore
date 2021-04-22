@@ -6,6 +6,12 @@ export default [
     type: 'post'
   },
   {
+    name: '校验新增修改功能获分组',
+    method: 'checkAddType',
+    path: '/functionGroup/checkAddType/:id',
+    type: 'post'
+  },
+  {
     name: '查看单个功能组',
     method: 'getFunctionGroupById',
     path: '/functionGroup/getById/:id',

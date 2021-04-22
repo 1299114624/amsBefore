@@ -14,7 +14,7 @@
         <p>关联组件：{{this.form.componentNames}}</p>
         <p>添加时间：{{this.selectedNode.node.addTime}}</p>
         <p>修改时间：{{this.selectedNode.node.updateTime}}</p>
-        <div class="flexbox"><div style="min-width:60px">功能说明：</div><el-input v-model="this.selectedNode.node.description" class="remark" type="textarea" :rows="5" disabled></el-input></div>
+        <div class="flexbox"><div style="min-width:60px">功能说明：</div><el-input v-model="this.selectedNode.node.description" class="remark" type="textarea" :rows="4" disabled></el-input></div>
       </div>
     </div>
   </div>
