@@ -4,6 +4,7 @@
 const componentManagement = resolve => require(['views/arc/baseInfoManagement/componentManagement'], resolve);
 const functionManagement = resolve => require(['views/arc/baseInfoManagement/functionManagement'], resolve);
 const productManagement = resolve => require(['views/arc/baseInfoManagement/productManagement'], resolve);
+const productManagementDetail = resolve => require(['views/arc/baseInfoManagement/productManagement/detail'], resolve);
 const companyManagement = resolve => require(['views/arc/baseInfoManagement/companyManagement'], resolve);
 const companyManagementDetail = resolve => require(['views/arc/baseInfoManagement/companyManagement/detail'], resolve);
 const NotPermission = resolve => require(['views/exception/403.vue'], resolve);
@@ -15,6 +16,7 @@ export {
    componentManagement,
    functionManagement,
    productManagement,
+   productManagementDetail,
    companyManagement,
    companyManagementDetail,
    NotPermission,

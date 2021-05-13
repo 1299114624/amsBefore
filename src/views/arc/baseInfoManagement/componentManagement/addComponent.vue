@@ -23,8 +23,8 @@
               </el-form-item>
             </el-col>  
             <el-col :span="10" v-if="form.componentType === 1">
-              <el-form-item prop="companys" label-width="0">
-                <el-select v-model="form.companys" style="width:180px" placeholder="请选择所属客户" multiple collapse-tags> 
+              <el-form-item prop="companyIds" label-width="0">
+                <el-select v-model="form.companyIds" style="width:180px" placeholder="请选择所属客户" multiple collapse-tags filterable> 
                   <el-option v-for="item in companyList" :label="item.companyName" :value="item.id" :key="item.id"></el-option>  
                 </el-select>            
               </el-form-item>
@@ -90,7 +90,7 @@ export default {
         componentName: '',
         componentEnglishName: '',
         componentType: '',
-        companys: [],
+        companyIds: [],
         chargeman: [],
         languageType: '',
         designSvnAddress: '',
@@ -127,11 +127,12 @@ export default {
       this.show = val
       if (val) {
         this.title = this.type == 'add' ? '新增组件' : '修改组件'
+        this.getCompanyList()
         if (this.type == 'update') {
           this.form.componentName = this.detail.componentName
           this.form.componentEnglishName = this.detail.componentEnglishName
           this.form.componentType = this.detail.componentType
-          this.form.companys = this.detail.companys ? this.detail.companys.split(',').map(v => parseInt(v)): []
+          this.form.companyIds = this.detail.companyIds ? this.detail.companyIds.split(","): []
           this.form.chargeman = this.detail.chargeman ? this.detail.chargeman.split(',') : []
           this.form.languageType = this.detail.languageType
           this.form.designSvnAddress = this.detail.designSvnAddress
@@ -148,6 +149,7 @@ export default {
           this.loading = true
           let params = _.cloneDeep(this.form)
           params.chargeman = this.form.chargeman.join(',')
+          params.companyIds = params.componentType == '1' ? params.companyIds.join(',') : ''
           if (this.type == 'add') {
             this.$$api_component_addComponent({
               data: params,
@@ -181,6 +183,14 @@ export default {
         }
       })
     },
+    getCompanyList() {
+      this.$$api_company_getCompanyList({
+        fn: data =>{
+          data.forEach(v => v.id+='')
+          this.companyList = data
+        }
+      })     
+    },    
     onCancel() {
       this.$emit('update:isVisible', false)
       this.$refs.form.resetFields()
@@ -188,7 +198,7 @@ export default {
         componentName: '',
         componentEnglishName: '',
         componentType: '',
-        companys: [],
+        companyIds: [],
         chargeman: [],
         languageType: '',
         designSvnAddress: '',

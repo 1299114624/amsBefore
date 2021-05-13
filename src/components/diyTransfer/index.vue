@@ -70,7 +70,7 @@
             <li @click="unCheckNode(node, index)" v-for="(node, index) in selectedDataFilter" :key="index">
               <span :class="{'module-color': node.type === 0}">{{node[aliasLabel]}}</span>
               <slot name="diyinfo"
-                v-if="data[diyinfoLogo.key] === diyinfoLogo.value || (data.node && (data.node[diyinfoLogo.key] === diyinfoLogo.value))"
+                v-if="node[diyinfoLogo.key] === diyinfoLogo.value || (node.node && (node.node[diyinfoLogo.key] === diyinfoLogo.value))"
               ></slot>
             </li>
           </ul>
@@ -187,6 +187,9 @@ export default {
         this.$refs.diyTree.setCheckedKeys(defaultVal)
         this.setSelectedData()
       }
+    },
+    getCheckedNodes() {
+      return this.selectedData
     },
     // 折叠所有
     foldAll() {
@@ -327,13 +330,158 @@ export default {
     leftSearch(val, treeName) {
       this.$refs[treeName].filter(val)
     },
-    // 勾选获取消勾选单选框（还要把其它组的复选框反选）
-    selectFirstRadio() {
-
+    // 勾选获取消勾选单选框（还要把其它组的复选框check置为false）
+    selectFirstRadio(val, key) {
+      let self = this
+      if (this.firstRadio) {
+        // 一维单选
+        let treeData = this.useTreeData
+        let fatherNode = _.find(treeData, o => o.id === key)
+        let children = fatherNode.children || []
+        let item = _.find(children, o => o.id === key)
+        // 如果已经有组成员，替换
+        let _index = _.findIndex(this.selectedData, o => o.radioKey === item.radioKey)
+        if (_index !== -1) {
+          this.$set(this.selectedData, _index, item)
+        } else {
+          // 如果没有，则直接推入
+          this.selectedData.push(item)
+        }
+      } else if (this.radioCheckbox) {
+        // 单选复选混合
+        let cloneData = _.cloneDeep(this.useTreeData)
+        let children =  cloneData.find(item => item.id === key).children
+        for (let i = 0; i < children.length; i++) {
+          const el = children[i]
+          //如果不是当前组则全部check为false
+          if (el.id !== val) {
+            const childrenIn = el.children
+            setCheckbox(childrenIn)
+          }
+        }
+        this.useTreeData = cloneData
+        this.getAllSelected(this.useTreeData)
+        function setCheckbox(treeData) {
+          for (let i = 0; i < treeData.length; i++) {
+            const el = treeData[i]
+            if (el.hasOwnProperty('checkboxKey')) {
+              el.checked = false
+            }
+            if (el.children && el.children.length) {
+              setCheckbox(el.children)
+            }
+          }
+        }
+      }
     },
-    // 勾选获取消单选下的多选框
-    selectDiyCheckbox() {
-
+    // 勾选或取消单选下的多选框
+    selectDiyCheckbox(selected, data, node, setData) {
+      let self = this
+      if (selected) {
+        let firstParentId = ''
+        this.selectedData.push(data)
+        this.$set(this.firstRadioCheckedVal, data.grandRadioKey, data.checkboxKey)
+        // 把其它组的复选框checked置为false
+        this.selectFirstRadio(data.checkboxKey, data.grandRadioKey)
+        // 把所有父节点勾上
+        let parentNode = node.parent
+        let parentKeys = []
+        getParentKeys(parentNode)
+        let cloneData = _.cloneDeep(this.useTreeData)
+        setParentCheckbox(cloneData, parentKeys)
+        this.useTreeData = cloneData
+      } else {
+        // 把下级节点全部checked置为false
+        if (this.setData) {
+          if (data.children && data.children.length) {
+            unCheckedAllChildren(data.children)
+          }
+        } else {
+          let grandData = {}
+          let cloneData = _.cloneDeep(this.useTreeData)   
+          for (let i = 0; i < cloneData.length; i++) {
+            if (data.grandRadioKey === cloneData[i].id) {
+              grandData = cloneData[i]
+              break
+            }
+          } 
+          let radioParentId = data.checkboxKey
+          let radioChildren = grandData.children
+          let checkboxGroup = {}      
+          if (radioChildren && radioChildren.length) {
+            for (let j = 0; j < radioChildren.length; j++) {
+              const el = radioChildren[j]
+              if (el.id === radioParentId) {
+                checkboxGroup = el
+                break
+              }
+            }
+          }
+          let checkboxItem = checkboxGroup.children
+          setDeepCheckbox(checkboxItem)
+          this.useTreeData = cloneData
+          this.getAllSelected(this.useTreeData)
+        }
+      }
+      if (setData) {
+        this.getAllSelected(this.useTreeData)
+      }
+      function getParentKeys(node) {
+        // 该节点是checkbox
+        let data = node.data
+        if (data.hasOwnProperty('radioKey')) {
+          firstParentId = data.id // 一级父节点id
+        }
+        if (data.hasOwnProperty('checkboxKey')) {
+          parentKeys.push(data.id)
+        }
+        if (node.parent) {
+          getParentKeys(node.parent)
+        }
+      }
+      function setParentCheckbox(treeData, parentKeys) {
+        treeData.forEach(item => {
+          if (item.hasOwnProperty('checkboxKey')) {
+            if (parentKeys.includes(item.id) && firstParentId === item.checkboxKey) {
+              item.checked = true
+            }
+          }
+          if (item.children && item.children.length) {
+            setParentCheckbox(item.children, parentKeys)
+          }
+        })
+      }      
+      function unCheckedAllChildren(treeData) {
+        treeData.forEach(item => {
+          if (item.hasOwnProperty('checkboxKey')) {
+            item.checked = false
+            if (item.children && item.children.length) {
+              unCheckedAllChildren(item.children)
+            }
+          }
+        })
+      }
+      function setDeepCheckbox(checkboxGroup) {
+        for (let k = 0; k < checkboxGroup.length; k++) {
+          const checkbox = checkboxGroup[k]
+          // 不是最底层checkbox
+          if (checkbox.children && checkbox.children.length) {
+            if (checkbox.id === data.id) {
+              checkbox.checked = false
+              unCheckedAllChildren(checkbox.children)
+              break
+            } else {
+              setDeepCheckbox(checkbox.children)
+            }
+          } else {
+            // 最底层checkbox
+            if (checkbox.id === data.id) {
+              checkbox.checked = false
+              break
+            }
+          }
+        }
+      }
     },
     // 遍历获取勾选数据
     getAllSelected(treeData) {
@@ -345,9 +493,120 @@ export default {
 
 <style lang='scss' scoped>
 .DIY_transfer {
-  height: 100%;
-  .el-icon-sort {
-    transform: rotate(90);
+  width: 496px;
+  height: 328px;
+  display: flex;
+  justify-content: space-between;
+  .left-tree, .right-result {
+    width: 218px;
+    border: 1px solid #ebeef5;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    .title {
+      height: 30px;
+      font-size: 14px;
+      text-align: center;
+      line-height: 30px;
+      position: relative;
+      color: #909399;
+      .tree-btn {
+        position: absolute;
+        right: 0;
+        padding: 3px 5px;
+        top: 5px;
+        right: 10px;
+      }
+    }
+    .seart-wrap {
+      padding: 0 10px;
+      .el-icon-search, .el-input__icon {
+        color: #4183d7;
+        line-height: 28px;
+      }
+      .el-icon-error {
+        font-size: 10px !important;
+      }
+    }
+    .tree-wrap, .result-wrap {
+      border-top: 1px solid #ebeef5;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 61px;
+      bottom: 24px;
+      overflow: hidden;
+      .tree-label {
+        color: #000;
+      }
+      .module-color {
+        color: #777999;
+      }
+      .no-data {
+        font-size: 14px;
+        color: #909399;
+        text-align: center;
+        margin-top: 5px;
+      }
+      ul {
+        li {
+          padding: 2px 10px;
+          line-height: 18px;
+          cursor: pointer;
+          &:hover {
+            span {
+              color: #4183d7;
+            }
+            background: #d1f0ff;
+          }
+        }
+      }
+      /deep/ .el-tree {
+        display: inline-block;
+        min-width: 210px;
+        /deep/ .el-checkbox__inner {
+          background: #d1f0ff;
+          width: 14px;
+          height: 14px;
+        }
+        /deep/ .el-checkbox__input.is-checked .el-checkbox__inner {
+          background: #4183d7;
+          border-color: #4183d7;
+        }
+        /deep/ .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+          background: #4183d7;
+          border-color: #4183d7;
+        }
+        /deep/ .el-tree-node__label {
+          font-size: 12px;
+          color: #000;
+        }
+      }
+    }
+    .trans-footer {
+      height: 24px;
+      line-height: 24px;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0 10px;
+      border-top: 1px solid #ebeef5;
+      width: 100%;
+      z-index: 1;
+      position: absolute;
+      bottom: 0;
+      box-sizing: border-box;
+      color: #909399;
+    }
+  }
+  .center-icon {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    .el-icon-sort {
+      transform: rotate(90deg);
+    }
   }
 }
 </style>

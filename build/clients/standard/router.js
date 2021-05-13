@@ -10,6 +10,7 @@ var STANDARD_IMPORT = {
     functionManagement: 'views/arc/baseInfoManagement/functionManagement',
     // 基础信息维护-产品管理
     productManagement: 'views/arc/baseInfoManagement/productManagement',
+    productManagementDetail: 'views/arc/baseInfoManagement/productManagement/detail',    
     // 基础信息维护-客户管理
     companyManagement: 'views/arc/baseInfoManagement/companyManagement',
     companyManagementDetail: 'views/arc/baseInfoManagement/companyManagement/detail',

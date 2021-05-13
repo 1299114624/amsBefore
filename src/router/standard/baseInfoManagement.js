@@ -2,7 +2,7 @@
  * 基础信息维护路由
  */
 import { Content } from 'layout/';
-import { componentManagement, functionManagement, productManagement, companyManagement, companyManagementDetail } from '../import';
+import { componentManagement, functionManagement, productManagement, companyManagement, productManagementDetail, companyManagementDetail } from '../import';
 export default {
     path: 'baseInfoManagement',
     name: 'baseInfoManagement',
@@ -32,31 +32,66 @@ export default {
         },
         {
             path: 'productManagement',
-            name: 'productManagement',
+            name: 'productManagementContent',
             meta: {
                 alias: '产品管理',
                 parentName: 'baseInfoManagement'
             },
-            component: productManagement,            
-        },
+            redirect: 'productManagement',
+            component: Content,   
+            children: [
+                {
+                    path: '',
+                    name: 'productManagement',
+                    meta: {
+                        alias: '产品管理',
+                        parentName: 'productManagementContent'
+                    },
+                    component: productManagement,                       
+                },
+                {
+                    path: 'productManagementDetail',
+                    name: 'productManagementDetail',
+                    hidden: true,
+                    meta: {
+                        alias: '产品管理详情',
+                        parentName: 'productManagementContent',
+                        grandParentName: 'baseInfoManagement'
+                    },
+                    component: productManagementDetail,            
+                },                 
+            ]         
+        },       
         {
             path: 'companyManagement',
-            name: 'companyManagement',
+            name: 'companyManagementContent',
             meta: {
                 alias: '客户管理',
-                parentName: 'baseInfoManagement'
             },
-            component: companyManagement,            
+            redirect: 'companyManagement',
+            component: Content,   
+            children: [
+                {
+                    path: '',
+                    name: 'companyManagement',
+                    meta: {
+                        alias: '客户管理',
+                    },
+                    component: companyManagement,                      
+                },
+                {
+                    path: 'companyManagementDetail',
+                    name: 'companyManagementDetail',
+                    hidden: true,
+                    meta: {
+                        alias: '客户管理详情',
+                        parentName: 'companyManagementContent',
+                        grandParentName: 'baseInfoManagement'
+                    },
+                    component: companyManagementDetail,            
+                },
+            ]        
         },
-        {
-            path: 'companyManagementDetail',
-            name: 'companyManagementDetail',
-            hidden: true,
-            meta: {
-                alias: '客户管理详情',
-                parentName: 'companyManagement'
-            },
-            component: companyManagementDetail,            
-        },
+
     ]
 }

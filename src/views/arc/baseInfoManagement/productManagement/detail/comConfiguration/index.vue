@@ -2,7 +2,7 @@
   <div class='P_comConfiguration'>
     <div class="P_content">
       <div class="content__search">
-        <el-button @click="handleAddClick" type="primary" style="margin: 8px">新增客户组件</el-button>
+        <el-button @click="handleAddClick" type="primary" style="margin: 8px">新增产品组件</el-button>
       </div>
       <div class="content__table">
         <el-table :data="list" stripe border height="100%" :empty-text="emptyText">
@@ -22,7 +22,7 @@
             </template>           
           </el-table-column>
           <el-table-column align="center" label="组件类型" prop="componentType">
-            <template slot-scope="scope">{{ AfFormatterListEnum('ComponentType', scope.row.componentType + '')}}</template>            
+            <template slot-scope="scope">{{ AfFormatterListEnum('ComponentType', scope.row.componentType + '')}}</template>              
           </el-table-column>   
           <el-table-column align="center" label="设计文档SVN地址" prop="designSvnAddress" min-width="130"></el-table-column>
           <el-table-column align="center" label="需求文档SVN地址" prop="requireSvnAddress" min-width="130"></el-table-column>
@@ -32,7 +32,7 @@
             <template slot-scope="scope">
               <el-button type="text" @click="deleteConfirm(scope.row)">删除</el-button>
             </template>
-          </el-table-column>
+          </el-table-column>          
         </el-table>        
       </div>
       <el-pagination
@@ -56,11 +56,10 @@
         :titles="['未选', '已选']"
         :treeData="treeData"
         :check-strictly="true"
-        :diyinfo-logo="diyinfoLogo"
         alias-label="componentName"
         ref="diyTransfer"
       >
-        <span class="tag ml10 f-12" slot="diyinfo">{{simpleCompanyName}}</span>
+        <span class="tag" slot="diyinfo">通用</span>
       </diy-transfer>
       <p class="operation">
         <el-button type="primary" :loading="sureLoading" size="small" @click="onSubmit">确 定</el-button>
@@ -73,6 +72,7 @@
 <script>
 import { baseTableMixin, resizeMixin } from 'mixins'
 import diyTransfer from '@/components/diyTransfer'
+import {getPageNumber} from 'utils/utils/index.js'
 export default {
   mixins: [baseTableMixin, resizeMixin],
   components: {
@@ -84,34 +84,23 @@ export default {
       queryParameters: {},
       list: [],
       treeData: [],
-      companyId: '',
       productId: '',
-      companyName: '',
-      simpleCompanyName: '',
+      productName: '',
       showAddDialog: false,
       sureLoading: false,
-      diyinfoLogo: {
-        key: 'componentType',
-        value: 1
-      },
     }
   },
   created () {
-    this.companyId = parseInt(this.$route.query.id)   // 客户id
-    this.companyName = this.$route.query.companyName  // 公司名称
-    this.simpleCompanyName = this.$route.query.simpleCompanyName  // 公司名称
-    this.queryParameters = {
-      companyId: this.companyId,
-    }
+    this.productName = this.$route.query.productName  // 产品名称
   },
   methods: {
     query(productId) {
       // this.loadingData = true
       if (productId) {
         this.productId = productId
-      }      
+      }
       this.queryParameters.productId = this.productId
-      this.$$api_company_getCompanyCom({
+      this.$$api_product_getProductCom({
         data: this.$$GET_COMMON_QUERY_PARAM(
           this.queryParameters,
           this.pageNumber,
@@ -124,19 +113,19 @@ export default {
           this.totalCount = data.total
         }
       })
-    },  
+    },   
     handleSelectionChange(val) {
       this.selectIds = val
-    }, 
+    },    
     deleteConfirm(row) {
       this.$confirm('确定删除吗?', "提示", {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$$api_company_deleteCompanyComponent({
+        this.$$api_product_deleteProductComponent({
           restParam: {
-            id: row.companyComponentId + ''
+            id: row.productComponentId + ''
           },
           fn: data =>{
             this.$$SuccessMessage('删除成功！')
@@ -144,12 +133,11 @@ export default {
           }
         })        
       })
-    },         
+    },     
     handleAddClick() {
       this.showAddDialog = true
-      this.$$api_company_getDisCompanyCom({
+      this.$$api_product_getDisProductCom({
         data: {
-          companyId: this.companyId,
           productId: this.productId,
         },
         fn: data =>{
@@ -175,11 +163,10 @@ export default {
       selected.forEach(item => {
         submitData.push({
           componentId: item.id,
-          productId: this.productId,
-          companyId: this.companyId,
+          productId: this.productId
         })
       })
-      this.$$api_company_addCompanyCom({
+      this.$$api_product_addProductCom({
         data: submitData,
         fn: data =>{
           this.$$SuccessMessage('新增成功')
@@ -205,15 +192,9 @@ export default {
 <style lang='scss' scoped>
 .P_comConfiguration {
   height: 100%;
-  .tag {
-    padding: 0px 6px;
-    border-radius: 5px;
-    background: #90cd00;
-    color: #fff;
-  }
   .operation {
     margin-top: 10px;
     float: right;
-  }  
+  }
 }
 </style>

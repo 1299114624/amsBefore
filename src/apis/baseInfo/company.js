@@ -30,9 +30,27 @@ export default [
     type: 'post'
   },
   {
-    name: '删除组件',
-    method: 'getComByProduct',
-    path: '/companyComponent/getComByProduct',
+    name: '获取该客户所选的所有组件',
+    method: 'getCompanyCom',
+    path: '/companyComponent/getCompanyCom',
     type: 'post'
   },
+  {
+    name: '获取该客户所选的所有差量组件',
+    method: 'getDisCompanyCom',
+    path: '/companyComponent/getDisCompanyCom',
+    type: 'post'
+  },
+  {
+    name: '添加客制产品组件',
+    method: 'addCompanyCom',
+    path: '/companyComponent/addCompanyCom',
+    type: 'post'
+  },
+  {
+    name: '删除组件',
+    method: 'deleteCompanyComponent',
+    path: '/companyComponent/delete/:id',
+    type: 'post'
+  },  
 ]

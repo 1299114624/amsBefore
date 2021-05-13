@@ -3,6 +3,7 @@
   padding: 10px 20px 20px 20px;
   color: #48576a;
   font-size: 14px;
+  overflow: auto;
 }
 .el-dialog__header {
   padding: 15px 15px 0 15px;
@@ -53,8 +54,8 @@
 }
 
 // scrollbar 
-// .el-scrollbar {
-//   height: 100%;
+.el-scrollbar {
+  height: 100%;
 //   // overflow-y: scroll;
 //   // overflow: hidden;
 //   // &:hover,
@@ -64,7 +65,7 @@
 //   //   transition: opacity 340ms ease-out;
 //   //   overflow-y: scroll;
 //   // }  
-// }
+}
 .scrollbar_thin {
   &::-webkit-scrollbar {
     width: 1px;

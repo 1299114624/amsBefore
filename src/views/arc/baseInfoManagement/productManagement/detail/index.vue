@@ -1,14 +1,8 @@
 <template>
-  <div class='P_companyManagement'>
-    <header class="company__header">
+  <div class='P_productManagement'>
+    <header class="product__header">
       <i class="el-icon-back" @click="goBack"></i>
-      <span class="currentCompany">当前客户：{{ $route.query.companyName }}</span>
-      <span class="curentProduct">
-        <span>当前产品：</span>
-        <el-select v-model="productId" @change="selectProduct" placeholder="请选择产品">
-          <el-option v-for="item in productList" :key="item.id" :label="item.simpleEnglishName" :value="item.id"></el-option>
-        </el-select>
-      </span>
+      <span class="currentProduct">当前产品：{{ $route.query.productName }}</span>
     </header>
     <div class="flexbox">
       <div class="left">
@@ -46,30 +40,9 @@ export default {
     }
   },
   mounted () {
-    let id = this.$route.query.id
-    this.getProductList(id)
+    this.productId = this.$route.query.id
   },
   methods: {
-    getProductList(id) {
-      this.$$api_product_getProductListByCompanyId({
-        restParam: {
-          id
-        },
-        fn: data =>{
-          if (!data.length) {
-            this.$message({
-              showClose: true,
-              message: '当前客户下暂无产品！',
-              type: 'warning'
-            })
-            return
-          }
-          this.productList = data
-          this.productId = data[0].id
-          this.$refs.funcConfig.query(this.productId)
-        }
-      })
-    },
     selectProduct(val) {
       if (this.showIndex == '1') {
         this.$refs.funcConfig.query(val)
@@ -85,7 +58,7 @@ export default {
     },
     goBack() {
       this.$router.push({
-        name: 'companyManagement',
+        name: 'productManagement',
       })
     },
   }
@@ -93,9 +66,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.P_companyManagement {
+.P_productManagement {
   height: 100%;
-  .company__header {
+  .product__header {
     height: 46px;
     line-height: 42px;
     border-bottom: 4px solid #ddd;
@@ -106,7 +79,7 @@ export default {
       padding-right: 5px;
       color: #409EFF;
     }
-    .currentCompany, .curentProduct {
+    .currentProduct, .curentProduct {
       display: inline-block;
       margin-left: 20px;
       font-size: 14px;

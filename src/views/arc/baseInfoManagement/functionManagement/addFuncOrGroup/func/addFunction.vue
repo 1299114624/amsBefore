@@ -10,14 +10,14 @@
         </el-form-item>  
         <el-form-item label=" " label-width="0">
           <el-row>
-            <el-col :span="8">
+            <el-col :span="10">
               <el-form-item prop="functionType" label = "功能类型：">
                 <el-select v-model="form.functionType" style="width:180px" placeholder="请选择功能类型" clearable disabled> 
                   <el-option v-for="item in functionTypeList" :label="item.name" :value="item.value" :key="item.value"></el-option>  
                 </el-select>  
               </el-form-item>
             </el-col>
-            <el-col :span="8" v-if="form.functionType == '1'">
+            <el-col :span="10" v-if="form.functionType == '1'">
               <el-form-item prop="companyIds" label=" " label-width="0">
                 <el-select v-model="form.companyIds" style="width:180px" placeholder="请选择客户" multiple collapse-tags clearable> 
                   <el-option v-for="item in companyList" :label="item.companyName" :value="item.id" :key="item.id"></el-option>  

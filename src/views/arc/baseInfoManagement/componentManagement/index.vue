@@ -36,7 +36,11 @@
           </template>           
         </el-table-column>
         <el-table-column align="center" label="组件类型" prop="componentTypeCn"></el-table-column>
-        <el-table-column align="center" label="所属客户" prop="companyNames"></el-table-column>
+        <el-table-column align="center" label="所属客户" prop="companyNames">
+          <template slot-scope="{ row }">
+            <auto-popover :popoverValue="row.companyNames"></auto-popover>
+          </template>             
+        </el-table-column>
         <el-table-column align="center" label="被引用功能" prop="functionNames" min-width="95">
           <template slot-scope="{ row }">
             <auto-popover :popoverValue="row.functionNames"></auto-popover>

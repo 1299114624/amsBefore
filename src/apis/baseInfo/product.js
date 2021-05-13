@@ -35,4 +35,28 @@ export default [
     path: '/product/deleteBatch',
     type: 'post'
   },
+  {
+    name: '获取该产品所选的所有组件',
+    method: 'getProductCom',
+    path: '/productComponent/getProductCom',
+    type: 'post'
+  },
+  {
+    name: '获取该产品所选的所有差量组件',
+    method: 'getDisProductCom',
+    path: '/productComponent/getDisProductCom',
+    type: 'post'
+  },
+  {
+    name: '添加产品组件',
+    method: 'addProductCom',
+    path: '/productComponent/addProductCom',
+    type: 'post'
+  },
+  {
+    name: '删除组件',
+    method: 'deleteProductComponent',
+    path: '/productComponent/delete/:id',
+    type: 'post'
+  },    
 ]

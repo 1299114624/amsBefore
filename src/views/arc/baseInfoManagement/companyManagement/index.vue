@@ -39,7 +39,7 @@
         <el-table-column label="操作" fixed="right" width="120" header-align="center" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button type="text" @click="handleViewClick(scope.row)">配置</el-button>
+            <el-button type="text" @click="handleSet(scope.row)">配置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -167,12 +167,13 @@ export default {
         })        
       })
     },
-    handleViewClick({id, companyName}) {
+    handleSet({id, companyName, simpleCompanyName}) {
       this.$router.push({
-        path: `companyManagementDetail`,
+        name: `companyManagementDetail`,
         query: {
           id: id,
           companyName: companyName,
+          simpleCompanyName: simpleCompanyName,
         }
       })
     },    
