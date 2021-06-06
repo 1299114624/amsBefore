@@ -10,11 +10,11 @@
       </div>
       <div class="right">
         <funcConfiguration 
-          ref="funcConfig" 
+          ref="funcConfig"
           v-if="showIndex === '1'"
         ></funcConfiguration>
         <comConfiguration 
-          ref="comConfig" 
+          ref="comConfig"
           v-if="showIndex === '2'"
         ></comConfiguration>
       </div>
@@ -36,25 +36,13 @@ export default {
     return {
       showIndex: '1',
       productList: [],
-      productId: ''
     }
   },
   mounted () {
-    this.productId = this.$route.query.id
   },
   methods: {
-    selectProduct(val) {
-      if (this.showIndex == '1') {
-        this.$refs.funcConfig.query(val)
-      } else {
-        this.$refs.comConfig.query(val)
-      }
-    },
     changeTableList(index) {
       this.showIndex = index
-      this.$nextTick(() => {
-        this.selectProduct(this.productId)
-      })
     },
     goBack() {
       this.$router.push({

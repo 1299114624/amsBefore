@@ -58,5 +58,11 @@ export default [
     method: 'deleteProductComponent',
     path: '/productComponent/delete/:id',
     type: 'post'
-  },    
+  }, 
+  {
+    name: '获取该产品所选的所有功能',
+    method: 'getProductFunction',
+    path: '/productFunction/getProductFunction/:id',
+    type: 'post'
+  },   
 ]

@@ -123,6 +123,20 @@
     @include align-stretch;
 }
 
+// justify对齐
+.box-justify {
+    //变成伸缩盒
+    @extend .flexbox;
+
+    // 主轴方向，水平（默认）
+
+    // 主轴对齐，justify
+    @extend .main-align-justify;
+
+    // 侧轴对齐，center
+    @include align-center;
+}
+
 .flex1 {
     flex: 1;
 }

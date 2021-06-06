@@ -78,13 +78,11 @@ export default {
   components: {
     diyTransfer
   },
-  props: [],
   data () {
     return {
       queryParameters: {},
       list: [],
       treeData: [],
-      productId: '',
       productName: '',
       showAddDialog: false,
       sureLoading: false,
@@ -92,14 +90,14 @@ export default {
   },
   created () {
     this.productName = this.$route.query.productName  // 产品名称
+    this.productId = this.$route.query.id
+    this.queryParameters.productId = this.productId
+  },
+  mounted() {
+    this.query()
   },
   methods: {
-    query(productId) {
-      // this.loadingData = true
-      if (productId) {
-        this.productId = productId
-      }
-      this.queryParameters.productId = this.productId
+    query() {
       this.$$api_product_getProductCom({
         data: this.$$GET_COMMON_QUERY_PARAM(
           this.queryParameters,
