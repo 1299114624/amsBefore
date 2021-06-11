@@ -12,7 +12,15 @@ export const logout = {
   type: 'post'
 }
 
+export const userInfo = {
+  name: '获取用户信息',
+  method: 'userInfo',
+  path: '/identity/userInfo',
+  type: 'post'
+}
+
 export default [
   login,
   logout,
+  userInfo,
 ]
