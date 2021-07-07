@@ -78,9 +78,9 @@ export default async function({
         if (res.data[gbs.api_status_key_field] == gbs.api_status_value_field) {   // code == 0 时
           fn(res.data[gbs.api_data_field])
         } else {  // code 非 0 时
-          if (gbs.api_custom[res.data[gbs.api_status_key_field]]) { // 返回code 为 404 或者 10004
+          if (gbs.api_custom[res.data[gbs.api_status_key_field]]) { // 返回code 为 404 或者 10004            
             gbs.api_custom[res.data[gbs.api_status_key_field]].call(this, res.data)
-          } else {
+          } else {            
             if (errFn) {
               errFn.call(this, res.data)
             } else {
@@ -92,6 +92,9 @@ export default async function({
     }).catch(err => {
       console.error("请求地址：" + path, "错误：" + err);
       //  未登录
+      if(!err.response) {
+        return false
+      }
       if (err.response.status === 401) {
         localStore.remove('uid')
         localStore.remove('token')

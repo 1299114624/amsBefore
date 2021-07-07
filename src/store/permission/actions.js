@@ -1,12 +1,11 @@
 import { asyncRouterMap } from 'router'
 
 function hasPermission(roles, route) {
-    return true
-    // if (route.meta && route.meta.role) {
-    //     return roles.includes(route.meta.role)
-    // } else {
-    //     return true
-    // }
+    if (route.meta && route.meta.role) {
+        return roles.includes(route.meta.role[0])
+    } else {
+        return true
+    }
 }
 
 export default {
@@ -30,7 +29,7 @@ export default {
                 }
             }
             for (let i = 0; i < asyncRouterMap.length; i++) {
-                if (!asyncRouterMap.children) continue
+                if (!asyncRouterMap[i].children) continue
                 asyncRouterMap[i].children = asyncRouterMap[i].children.filter(v => {
                     if (hasPermission(roles, v)) {
                         if (v.children && v.children.length > 0) {

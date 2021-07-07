@@ -123,3 +123,38 @@ $mainColor: #4183D7;
   }
 }
 </style>
+
+<style lang='scss' scoped>
+.P_login {
+  .el-form {
+    .el-form-item {
+      margin-bottom: 30px;
+      /deep/ .el-form-item__error {
+        padding-top: 5px;
+      }
+    }
+    /deep/ .el-input__inner {
+      height: 40px;
+      border-radius: 3px;
+    }
+    .el-button {
+      width: 100%;
+      height: 40px;
+      font-size: 15px;
+      background: #4183D7;
+      border-color: #4183D7;
+      &:hover {
+        background: #4490f7;
+        border-color: #4490f7;
+      }
+    }
+    .validateCodeImage {
+      height: 40px;
+      padding-left: 26px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+</style>

@@ -68,7 +68,11 @@ router.beforeEach((to, from, next) => {
     } else if (!isLogin) {
       next({ path: '/login' })
     } else {
-      next()
+      if(!store.getters.isGetInfo) {
+        execute()
+      } else {
+        next()
+      }
     }    
   }
   // 获取系统登录模式

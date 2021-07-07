@@ -9,6 +9,7 @@ export default {
     meta: {
         alias: '基础信息维护',
         noGroup: true,
+        role: ["AVM"]
     },
     component: Content,
     children: [
@@ -17,7 +18,7 @@ export default {
             name: 'componentManagement',
             meta: {
                 alias: '组件管理',
-                parentName: 'baseInfoManagement'
+                role: ["AVM01"]
             },
             component: componentManagement,            
         },
@@ -26,7 +27,7 @@ export default {
             name: 'functionManagement',
             meta: {
                 alias: '功能管理',
-                parentName: 'baseInfoManagement'
+                role: ["AVM02"]
             },
             component: functionManagement,            
         },
@@ -35,7 +36,7 @@ export default {
             name: 'productManagementContent',
             meta: {
                 alias: '产品管理',
-                parentName: 'baseInfoManagement'
+                role: ["AVM03"]
             },
             redirect: 'productManagement',
             component: Content,   
@@ -45,7 +46,7 @@ export default {
                     name: 'productManagement',
                     meta: {
                         alias: '产品管理',
-                        parentName: 'productManagementContent'
+                        role: ["AVM0301"]
                     },
                     component: productManagement,                       
                 },
@@ -55,8 +56,7 @@ export default {
                     hidden: true,
                     meta: {
                         alias: '产品管理详情',
-                        parentName: 'productManagementContent',
-                        grandParentName: 'baseInfoManagement'
+                        role: ["AVM0302"]
                     },
                     component: productManagementDetail,            
                 },                 
@@ -67,6 +67,7 @@ export default {
             name: 'companyManagementContent',
             meta: {
                 alias: '客户管理',
+                role: ["AVM04"]
             },
             redirect: 'companyManagement',
             component: Content,   
@@ -76,6 +77,7 @@ export default {
                     name: 'companyManagement',
                     meta: {
                         alias: '客户管理',
+                        role: ["AVM0401"]
                     },
                     component: companyManagement,                      
                 },
@@ -85,8 +87,7 @@ export default {
                     hidden: true,
                     meta: {
                         alias: '客户管理详情',
-                        parentName: 'companyManagementContent',
-                        grandParentName: 'baseInfoManagement'
+                        role: ["AVM0402"]
                     },
                     component: companyManagementDetail,            
                 },

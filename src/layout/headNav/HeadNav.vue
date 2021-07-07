@@ -75,7 +75,24 @@
           </ul>
         </div>
       </div>
-      <div class="flexbox align-center messages"></div>
+      <div class="flexbox align-center messages" @mouseleave="handleMouseLeave">
+        <div class="message-list" :class="{'show-panel': showName,'hide-panel': !showName}">
+          <div class="menu-item" @click="setDialogInfo('pass')" v-if="isShowPasswd">修改密码</div>
+          <div class="menu-item" @click="setDialogInfo('logout')">退出</div>
+        </div>
+        <span class="user-name pointer" @click="handleToggle" :class="{'show-name': showName,'hide-name': !showName}">
+          <div class="f-12 rel">
+            {{this.username}}
+          </div>
+        </span>
+        <div class="split"></div>
+        <div class="datetime">
+          <span class="systemtime">
+            <span style="display:inline-block;width:68px;">系统时间</span>
+            <span>{{serverOSInfo.currentTime}}</span>
+          </span>
+        </div>
+      </div>
     </header>
   </div>
 </template>
@@ -90,13 +107,24 @@ export default {
       navArr: [],
       cloneNavArr: [],
       boundIndex: 0,
+      showName: false,
+      username: this.$store.state.user.name[0],
+      
     }
   },
   computed: {
     ...mapGetters(["menu_routers"]),
     ...mapState({
       systemInfo: state => state.global.systemInfo,
+      serverOSInfo: state => state.global.serverOSInfo,
     }),
+    isShowPasswd() {
+      let loginType = window.sessionStorage.getItem("af_login_type")
+      if (loginType == "0") {
+        return true
+      }
+      return false
+    }
   },
   created() {
     this.formatNavArr();
@@ -173,6 +201,60 @@ export default {
         this.$router.push({ name: menuItem.name })
       }
     },
+    handleMouseLeave() {
+      if (!this.showName) return
+      this.handleToggle()
+    },
+    handleToggle() {
+      this.showName = !this.showName
+      if (this.showName) {
+        this.username = `  ${this.$store.state.user.name}  `
+      } else {
+        this.username = this.$store.state.user.name[0]
+      }
+      this.$nextTick(() => this.calculateMenuContainerWidth())
+    },
+    /**
+     * 弹出框-修改密码或者系统设置
+     */
+    setDialogInfo(cmditem) {
+      switch (cmditem) {
+        case 'pass':
+          this.showPass = true
+          this.title = '修改密码'
+          break
+        case 'logout': {
+          this.logout()
+          break
+        }
+      }
+    },
+    logout() {
+      this.$confirm('您确定退出登录吗?', "确认退出", {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let loginType = window.sessionStorage.getItem("af_login_type")
+        this.$$api_user_logout({
+          fn: data =>{
+            this.$store.dispatch("remove_userinfo").then(() => {
+              // 退出websocket登录
+              if (this.$socket && this.$socket.readyState === 1) {
+                this.$socket.send("logout-" + this.$store.state.user.id + "")
+              }
+              if (!localStorage.getItem("af_sso_token")) {
+                if (loginType == "0" || loginType == "2") {
+                  this.$router.push({
+                    name: "loginBos"
+                  })
+                }
+              }
+            })
+          }
+        })         
+      })
+    }
   }
 };
 </script>
@@ -239,10 +321,6 @@ $icon-size: 20px;
           font-size: 12px;
           margin-left: 4px;
         }
-      }
-      .split {
-        border-left: 1px solid #394367;
-        height: 18px;
       }
     }
     #menuContainer {
@@ -340,7 +418,82 @@ $icon-size: 20px;
       min-width: 260px;
       position: relative;
       background: $header-color;
+      .message-list {
+        position: absolute;
+        left: 0;
+        top: 50px;
+        right: 0;
+        z-index: -1;
+        padding: 10px 0 20px;
+        background: #2c3c69;
+        .menu-item {
+          font-size: 12px;
+          padding: 0 20px;
+          height: 30px;
+          line-height: 30px;
+          color: #fff;
+          &:hover {
+            background: #2d83ec;
+          }
+        }
+        &.show-panel {
+          transform: translateY(0);
+          transition: all 0.1s linear 0.1s;
+        }
+        &.hide-panel {
+          transform: translateY(-100%);
+          transition: all 0.1s linear;
+        }
+      }
+      .user-name {
+        position: relative;
+        background: #2d83ec;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 12px;
+        margin: 0 10px;
+        padding: 3px;
+        .rel {
+          height: 18px;
+          line-height: 18px;
+          border-radius: 9px;
+          text-align: center;
+          white-space: nowrap;
+          background: #2d83ec;
+          color: #fff;
+        }
+        &.show-name {
+          background: rgba(45, 131, 236, 0.5);
+          margin-right: 10px;
+          transition: all 0.1s linear;
+          width: 120px;
+          .rel {
+            padding: 0 5px;
+          }
+        }
+        &.hide-name {
+          transition: all 0.1s linear 0.1s;
+          width: 24px;
+        }
+      }
+      .datetime {
+        min-width: 196px;
+        margin-left: 10px;
+        margin-right: 8px;
+        .systemtime {
+          font-size: 12px;
+          color: #a0abc7;
+          span {
+            color: #fff;
+            font-size: 12px;
+          }
+        }
+      }
     }
   }
+  .split {
+    border-left: 1px solid #394367;
+    height: 18px;
+  }  
 }
 </style>

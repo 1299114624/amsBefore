@@ -8,9 +8,9 @@
 export default {
   name: 'App',
   mounted() {
-    this.$store.dispatch('enumDicts_load')
-    this.$store.dispatch('getEnum')
-    this.$store.dispatch('getUserList')
+    // this.$store.dispatch('enumDicts_load')
+    // this.$store.dispatch('getEnum')
+    // this.$store.dispatch('getUserList')
   }
 }
 </script>

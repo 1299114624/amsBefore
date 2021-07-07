@@ -19,9 +19,42 @@ export default {
       },
       isCapslock: false,
       rule_data: {
-        userName: [],
-        password: [],
-        code: [],
+        userName: [{
+          validator: (rule, value, callback) => {
+            if (!value) {
+              callback(new Error('请输入用户名'))
+            } else if (value === 'allOp') {
+              callback()
+            } else {
+              if (/^[a-zA-Z0-9_-]{1,20}$/.test(value)) {
+                callback()
+              } else {
+                callback(new Error('用户名格式错误'))
+              }
+            }
+          },
+          trigger: 'blur'
+        }],
+        password: [{
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入密码'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'          
+        }],
+        code: [{
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入验证码'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'              
+        }],
       },
       base64Image: '',
       isShowValidateCode: false
@@ -43,6 +76,7 @@ export default {
     this.getIsShowValidateCode()
   },
   methods: {
+    checkCapslock() {},
     setSize() {
       this.winSize.width = document.body.clientWidth + 'px'
       this.winSize.height = document.documentElement.clientHeight + 'px'

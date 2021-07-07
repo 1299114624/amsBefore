@@ -23,4 +23,16 @@ export default [
   login,
   logout,
   userInfo,
+  {
+    name: '是否需要登录验证码',
+    method: 'getIsShowValidateCode',
+    path: '/getParam',
+    type: 'get',    
+  },
+  {
+    name: '获取验证码',
+    method: 'getValidateCode',
+    path: '/img/getValidateCode',
+    type: 'get',    
+  },
 ]
