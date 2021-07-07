@@ -46,6 +46,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   // 获取登录用户基础数据
   const execute = function() {
+    store.dispatch('getUserList')
     store.dispatch('GetUserInfo').then(res => {
       const roles = res.permission
       store.dispatch('GenerateRoutes', { roles }).then(() => {

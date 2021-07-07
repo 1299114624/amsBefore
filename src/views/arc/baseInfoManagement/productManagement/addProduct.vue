@@ -16,9 +16,9 @@
         <el-form-item prop="fullChineseName" label = "产品中文名称：">
           <el-input v-model="form.fullChineseName"></el-input>  
         </el-form-item>  
-        <el-form-item prop="chargeMemberNames" label = "产品负责人：">
-          <el-select v-model="form.chargeMemberNames" placeholder="请选择" multiple collapse-tags filterable>
-            <el-option v-for="item in chargeMemberNamesList" :label="item.name" :value="item.value" :key="item.value"></el-option>  
+        <el-form-item prop="groupMemberNames" label = "产品负责人：">
+          <el-select v-model="form.groupMemberNames" placeholder="请选择" multiple collapse-tags filterable>
+            <el-option v-for="item in userList" :label="item.realName" :value="item.realName" :key="item.id"></el-option>  
           </el-select> 
         </el-form-item>  
         <el-form-item prop="productDesc" label = "产品介绍：">
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: ['isVisible', 'type', 'detail'],
   data () {
@@ -83,7 +84,7 @@ export default {
         simpleEnglishName: '',
         fullEnglishName: '',
         fullChineseName: '',
-        chargeMemberNames: [],
+        groupMemberNames: [],
         productDesc: '',
       },
       rules: {
@@ -100,10 +101,15 @@ export default {
           { validator: checkProductDesc, trigger: 'blur' }
         ],
       },
-      chargeMemberNamesList: []
+      groupMemberNamesList: []
     }
   },
   mounted () {},
+  computed: {
+    ...mapState({
+      userList: state => state.global.userList
+    })
+  },  
   destroyed() {
     this.$emit('update:isVisible', false)
   },  
@@ -116,7 +122,7 @@ export default {
           this.form.simpleEnglishName = this.detail.simpleEnglishName
           this.form.fullEnglishName = this.detail.fullEnglishName
           this.form.fullChineseName = this.detail.fullChineseName
-          this.form.chargeMemberNames = this.detail.chargeMemberNames ? this.detail.chargeMemberNames.split(',') : []
+          this.form.groupMemberNames = this.detail.groupMemberNames ? this.detail.groupMemberNames.split(',') : []
           this.form.productDesc = this.detail.productDesc
         }
       }
@@ -128,7 +134,7 @@ export default {
         if (valid) {
           this.loading = true
           let params = _.cloneDeep(this.form)
-          params.chargeMemberNames = this.form.chargeMemberNames.join(',')
+          params.groupMemberNames = this.form.groupMemberNames.join(',')
           if (this.type == 'add') {
             this.$$api_product_addProduct({
               data: params,
@@ -169,7 +175,7 @@ export default {
         simpleEnglishName: '',
         fullEnglishName: '',
         fullChineseName: '',
-        chargeMemberNames: [],
+        groupMemberNames: [],
         productDesc: '',
       }
     }

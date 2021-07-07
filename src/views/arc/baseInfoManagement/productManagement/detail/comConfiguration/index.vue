@@ -6,7 +6,7 @@
       </div>
       <div class="content__table">
         <el-table :data="list" stripe border height="100%" :empty-text="emptyText">
-          <el-table-column type="selection" width="27"></el-table-column>
+          <!-- <el-table-column type="selection" width="27"></el-table-column> -->
           <el-table-column align="center" label="组件名称" prop="componentName" sortable="custom" min-width="105"></el-table-column>
           <el-table-column align="center" label="组件英文全称" prop="componentEnglishName" min-width="105">
             <template slot-scope="{ row }">

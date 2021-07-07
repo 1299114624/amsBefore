@@ -28,7 +28,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="产品中文全称" prop="fullChineseName" min-width="200"></el-table-column>
-        <el-table-column align="center" label="产品负责人" prop="chargeMemberNames" min-width="110"></el-table-column>
+        <el-table-column align="center" label="产品负责人" prop="groupMemberNames" min-width="110"></el-table-column>
         <el-table-column align="center" label="产品介绍" prop="productDesc" min-width="250"></el-table-column>
         <el-table-column align="center" label="创建时间" prop="addTime" min-width="130"></el-table-column>
         <el-table-column align="center" label="最新修改时间" prop="updateTime" min-width="130" sortable="custom"></el-table-column>
