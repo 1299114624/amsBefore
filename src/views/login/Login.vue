@@ -62,6 +62,7 @@ export default LoginJs
 $mainColor: #4183D7;
 .P_login {
   overflow: hidden;
+  background: url('/static/images/login_bg.png');
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;

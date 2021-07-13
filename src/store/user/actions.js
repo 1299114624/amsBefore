@@ -11,6 +11,7 @@ export default {
         fn: data => {
           store.set('userInfo', data)
           commit('SET_PERMISSION', [data.permission])
+          commit('SET_ID', data.id)
           commit('GET_INFO', true)
           resolve(data)
         },

@@ -15,6 +15,14 @@ Vue.use(router)
 
 /* eslint-disable no-new */
 new Vue({
+  sockets: {
+    connect:function(){
+      console.log('socket connected')
+    },
+    customEmit:function(){
+      console.log('socket emit')
+    },
+  },
   el: '#app',
   router,
   store,

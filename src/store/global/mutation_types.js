@@ -2,3 +2,7 @@
 export const ENUMDICT_UPDATE = 'ENUMDICT_UPDATE'
 // 用户信息
 export const USERLIST_UPDATE = 'USERLIST_UPDATE'
+// 更新服务器信息
+export const UPDATE_SERVEROSINFO = 'UPDATE_SERVEROSINFO'
+// 更新报错信息
+export const UPDATE_ERRORINFO = 'UPDATE_ERRORINFO'

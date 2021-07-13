@@ -1,8 +1,17 @@
 import Vue from 'vue'
 import cps from './component'
+import { gbs } from 'config/'
 import mixins from './mixin'
 import plugins from './plugin'
 import './polyfill.js'
+import Websocketio from 'vue-native-websocket'
+
+let isWs = 'https:' == document.location.protocol ? 'wss://' : 'ws://'
+Vue.use(Websocketio, isWs + location.host + gbs.wsHost, {
+  reconnection: true,
+  reconnectionAttempts: 10,
+  reconnectionDelay: 3000,
+})
 
 Vue.use({
   install(Vue, options) {

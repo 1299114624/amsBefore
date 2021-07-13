@@ -5,5 +5,8 @@ export default {
   serverOSInfo: {
     currentTime: '',
     tradeTime: ''
-  }
+  },
+  errorInfo: {
+    
+  },
 }

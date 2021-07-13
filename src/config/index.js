@@ -12,6 +12,10 @@ const gbs = {
     fileUploadPath: "/arc/files/upload",
     fileDownloadPath: "/arc/files/down",
     host: '/arc',
+
+    // websocket的地址
+    wsHost: '/arc/websocket',
+
     // 本地存储的 prefix key
     db_prefix: 'af_',
 

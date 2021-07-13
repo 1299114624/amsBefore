@@ -20,8 +20,8 @@
     "path-to-regexp": "^2.2.0",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.0",
+    "vue-native-websocket": "^2.0.14",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
     "wangeditor": "4.4.2"
   },
   "devDependencies": {

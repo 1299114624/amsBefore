@@ -1,6 +1,6 @@
 import * as types from './mutation_types'
 import {ajax, store} from 'utils'
-import {gbs} from 'config'
+import { gbs } from 'config'
 import {getAllDicts as apiDicts, getServerOsInfo as serverInfo, getSystemInfo as systemInfo, getAllUser as userList} from 'apis/global/index'
 export default {
   // 加载字典

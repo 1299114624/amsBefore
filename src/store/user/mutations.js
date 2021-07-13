@@ -8,6 +8,9 @@ export default {
   [types.GET_INFO] (state, val) {
     state.isGetInfo = val
   },
+  [types.SET_ID] (state, val) {
+    state.id = val
+  },
   [types.REMOVE_USERINFO] (state, val) {
     store.remove('userinfo')
   }

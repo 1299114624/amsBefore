@@ -14,7 +14,7 @@ export default {
     ...mapState({
       systemInfo: state => state.global.systemInfo
     })
-  }
+  },
 }
 </script>
 
@@ -23,13 +23,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('~/static/images/other/welcome_bg.jpg');
+  background-image: url('/static/images/welcome_bg.png');
   background-repeat: no-repeat;
   background-size: 100%;
   .content {
     position: absolute;
-    bottom: 20%;
-    width: calc(100% - 20px);
+    bottom: 60%;
+    width: 100%;
     background-color: #fff;
     text-align: center;
   }
