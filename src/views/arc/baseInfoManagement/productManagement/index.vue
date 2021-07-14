@@ -12,9 +12,9 @@
           <el-button class="ml-10" type="primary" @click="handleAdd">新增产品</el-button>
           <el-button class="mr-10" type="danger" @click="deleteConfirm" :disabled="selectIds.length == 0" plain>删除</el-button>
         </template>
-        <el-button slot="suffix" type="text" @click="handleExport">
+        <!-- <el-button slot="suffix" type="text" @click="handleExport">
           <i class="iconfont icon-daochu"></i>导出
-        </el-button>
+        </el-button> -->
       </form-query>
     </div>
     <div class="content__table">

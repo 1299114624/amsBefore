@@ -10,8 +10,10 @@ export default {
         type: apiGetUserInfo.type,
         fn: data => {
           store.set('userInfo', data)
+          commit('SET_USERINFO', data)
           commit('SET_PERMISSION', [data.permission])
           commit('SET_ID', data.id)
+          commit('SET_NAME', data.name)
           commit('GET_INFO', true)
           resolve(data)
         },
