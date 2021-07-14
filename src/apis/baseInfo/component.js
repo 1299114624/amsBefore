@@ -29,4 +29,11 @@ export default [
     path: '/component/deleteBatch',
     type: 'post'
   },
+  {
+    name: '导出',
+    method: 'export',
+    path: '/component/export',
+    type: 'post',
+    download: true
+  },
 ]

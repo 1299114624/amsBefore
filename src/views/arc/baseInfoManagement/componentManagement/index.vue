@@ -12,7 +12,7 @@
           <el-button class="ml-10" type="primary" @click="handleAdd">新增组件</el-button>
           <el-button class="mr-10" type="danger" @click="deleteConfirm" :disabled="selectIds.length == 0" plain>删除</el-button>
         </template>
-        <el-button slot="suffix" type="text" @click="handleExport">
+        <el-button slot="suffix" type="text" @click="handleExport" :loading="exportLoading">
           <i class="iconfont icon-daochu"></i>导出
         </el-button>
       </form-query>
@@ -121,6 +121,7 @@ export default {
       selectIds: [],
       showAddComponent: false,
       loadingData: false,
+      exportLoading: false,
       type: '',
       detail: {},
     }
@@ -165,7 +166,25 @@ export default {
       this.type = 'update'
       this.detail = detail
     },
-    handleExport(){},
+    handleExport(){
+      this.exportLoading = true
+      this.$$api_component_export({
+        data: this.$$GET_COMMON_QUERY_PARAM(
+          this.queryParameters,
+          this.pageNumber,
+          this.pageSize,
+          this.sortKey,
+          this.sortType
+        ),
+        fn: data =>{
+          this.exportLoading = false
+        },
+        errFn: err => {
+          this.exportLoading = false
+          this.$$ErrorMessage(err.msg)
+        }
+      })       
+    },
     handleSelectionChange(val) {
       this.selectIds = val
     },

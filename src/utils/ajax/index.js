@@ -73,7 +73,25 @@ export default async function({
     // 发送请求
     await Vue.axios(options).then(res => {
       if (download) { // 文件下载
-
+        if (res.headers["content-disposition"]) {
+          let filename = res.headers["content-disposition"].split(';')[1].split('=')[1]
+          filename = decodeURI(filename) //解码
+          let aLink = document.createElement('a')
+          let blob = new Blob([res.data])
+          aLink.style.display = 'none'
+          aLink.download = filename.substring(1,filename.length - 1)
+          aLink.href = URL.createObjectURL(blob)
+          document.body.appendChild(aLink)
+          aLink.click()
+          document.body.removeChild(aLink)
+          if (fn) {
+            fn(res.data)
+          }
+        } else {
+          if (errFn) {
+            errFn({msg: '导出文件失败'})
+          }
+        }
       } else {
         if (res.data[gbs.api_status_key_field] == gbs.api_status_value_field) {   // code == 0 时
           fn(res.data[gbs.api_data_field])
