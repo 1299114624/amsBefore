@@ -36,4 +36,28 @@ export default [
     type: 'post',
     download: true
   },
+  {
+    name: '获取下载模板信息',
+    method: 'downInfo',
+    path: '/component/downInfo',
+    type: 'post',
+  },
+  {
+    name: '批量导入',
+    method: 'batchImport',
+    path: '/component/batchImport',
+    type: 'post',
+  },
+  {
+    name: '获取解析结果',
+    method: 'getResult',
+    path: '/component/queryImportResult',
+    type: 'post',
+  },
+  {
+    name: '导出错误数据',
+    method: 'exportError',
+    path: '/component/exportError',
+    type: 'post',
+  },
 ]

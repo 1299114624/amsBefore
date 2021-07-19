@@ -10,11 +10,19 @@
       >
         <template slot="prefix">
           <el-button class="ml-10" type="primary" @click="handleAdd">新增组件</el-button>
+          <el-button class="ml-10" type="primary" @click="handleBatchUpload">批量导入组件</el-button>
           <el-button class="mr-10" type="danger" @click="deleteConfirm" :disabled="selectIds.length == 0" plain>删除</el-button>
         </template>
-        <el-button slot="suffix" type="text" @click="handleExport" :loading="exportLoading">
-          <i class="iconfont icon-daochu"></i>导出
-        </el-button>
+        <template slot="suffix">
+          <el-popover placement="left" trigger="hover" content="请按照模板要求填写数据后上传">
+            <el-button type="text" slot="reference">
+              <a :href="downloadUrl + '/' + fileId">下载模板</a>
+            </el-button>            
+          </el-popover>
+          <el-button type="text" @click="handleExport" :loading="exportLoading">
+            <i class="iconfont icon-daochu"></i>导出
+          </el-button>
+        </template>
       </form-query>
     </div>
     <div class="content__table">
@@ -78,17 +86,21 @@
       :detail="detail"  
       @refresh="refresh"
     ></addComponent>
+    <batch-upload :isVisible.sync="batchUploadVisible" @confirm="query"></batch-upload>
   </div>
 </template>
 
 <script>
+import { gbs } from "config/"
 import { baseTableMixin, resizeMixin } from 'mixins'
 import addComponent from './addComponent'
 import {getPageNumber} from 'utils/utils/index.js'
+import batchUpload from './batchUpload.vue'
 export default {
   mixins: [baseTableMixin, resizeMixin],
   components: {
-    addComponent
+    addComponent,
+    batchUpload
   },
   data() {
     return {
@@ -122,12 +134,16 @@ export default {
       showAddComponent: false,
       loadingData: false,
       exportLoading: false,
+      batchUploadVisible: false,
       type: '',
+      downloadUrl: gbs.fileDownloadPath,
+      fileId: '',
       detail: {},
     }
   },
   mounted() {
     this.query()
+    this.getDownInfo()
   },
   methods: {
     onSubmit(val) {
@@ -157,6 +173,9 @@ export default {
         }
       })
     },
+    handleBatchUpload() {
+      this.batchUploadVisible = true;
+    },
     handleAdd() {
       this.showAddComponent = true
       this.type = 'add'
@@ -165,6 +184,17 @@ export default {
       this.showAddComponent = true
       this.type = 'update'
       this.detail = detail
+    },
+    /**
+     * 获取模板地址信息
+     */
+    getDownInfo() {
+      this.$$api_component_downInfo({
+        data: {},
+        fn: data => {
+          this.fileId = data.id
+        }
+      })
     },
     handleExport(){
       this.exportLoading = true
