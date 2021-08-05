@@ -2,6 +2,7 @@
 
 import { Home } from 'layout/'
 import baseInfoManagement from './standard/baseInfoManagement.js';
+import sysOperation from './standard/sysOperation.js';
 import NotPermission from './standard/notPermission.js';
 import Welcome from './standard/welcome.js';
 import NotFound from './standard/notFound.js';
@@ -18,6 +19,7 @@ export default {
     component: Home,
     children: [
        baseInfoManagement,
+       sysOperation,
        NotPermission,
        Welcome,
        NotFound

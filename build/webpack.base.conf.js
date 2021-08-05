@@ -36,6 +36,7 @@ module.exports = {
       'config': resolve('src/config'),
       'utils': resolve('src/utils'),
       'store': resolve('src/store'),
+      'directives': resolve('src/directives'),
       'mixins': resolve('src/mixins'),
       'plugins': resolve('src/plugins'),
       'register': resolve('src/register'),

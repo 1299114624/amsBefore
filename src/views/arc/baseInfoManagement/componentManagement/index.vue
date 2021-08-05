@@ -10,7 +10,7 @@
       >
         <template slot="prefix">
           <el-button class="ml-10" type="primary" @click="handleAdd">新增组件</el-button>
-          <el-button class="ml-10" type="primary" @click="handleBatchUpload">批量导入组件</el-button>
+          <el-button class="ml-10" type="primary" @click="handleBatchUpload" v-permission="'AVM0101'">批量导入组件</el-button>
           <el-button class="mr-10" type="danger" @click="deleteConfirm" :disabled="selectIds.length == 0" plain>删除</el-button>
         </template>
         <template slot="suffix">

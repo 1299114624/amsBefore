@@ -1,7 +1,7 @@
 <template>
   <div class="welcome" id="welcome">
     <div class="content">
-      <p>{{`欢迎使用${systemInfo.name}`}}</p>
+      <p>{{`欢迎使用${this.$store.state.user.name}`}}</p>
     </div>
   </div>
 </template>

@@ -109,7 +109,6 @@ export default {
       boundIndex: 0,
       showName: false,
       username: this.$store.state.user.name[0],
-      
     }
   },
   computed: {

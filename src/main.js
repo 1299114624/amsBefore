@@ -6,6 +6,7 @@ import App from './App'
 import {router} from './router'
 import 'register/'
 import store from 'store/'
+import 'directives/'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true

@@ -14,6 +14,8 @@ var STANDARD_IMPORT = {
     // 基础信息维护-客户管理
     companyManagement: 'views/arc/baseInfoManagement/companyManagement',
     companyManagementDetail: 'views/arc/baseInfoManagement/companyManagement/detail',
+    // 系统运维-运行监控
+    operationMonitor: 'views/arc/sysOperation/operationMonitor',
     // 系统异常页面
     NotPermission: 'views/exception/403.vue',
     NotFound: 'views/exception/404.vue',
@@ -28,6 +30,7 @@ var STANDARD_IMPORT = {
  */
 var STANDARD_VIEWS = {
     baseInfoManagement: './standard/baseInfoManagement.js',
+    sysOperation: './standard/sysOperation.js',
     NotPermission: './standard/notPermission.js',
     Welcome: './standard/welcome.js',
     // 注意notfound要在最后

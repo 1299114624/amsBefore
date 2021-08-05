@@ -1,3 +1,4 @@
 export default {
-  isGetInfo: state => state.isGetInfo
+  isGetInfo: state => state.isGetInfo,
+  permissions: state => state.permission,
 }

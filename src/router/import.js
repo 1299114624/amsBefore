@@ -7,6 +7,7 @@ const productManagement = resolve => require(['views/arc/baseInfoManagement/prod
 const productManagementDetail = resolve => require(['views/arc/baseInfoManagement/productManagement/detail'], resolve);
 const companyManagement = resolve => require(['views/arc/baseInfoManagement/companyManagement'], resolve);
 const companyManagementDetail = resolve => require(['views/arc/baseInfoManagement/companyManagement/detail'], resolve);
+const operationMonitor = resolve => require(['views/arc/sysOperation/operationMonitor'], resolve);
 const NotPermission = resolve => require(['views/exception/403.vue'], resolve);
 const NotFound = resolve => require(['views/exception/404.vue'], resolve);
 const Welcome = resolve => require(['views/exception/welcome.vue'], resolve);
@@ -19,6 +20,7 @@ export {
    productManagementDetail,
    companyManagement,
    companyManagementDetail,
+   operationMonitor,
    NotPermission,
    NotFound,
    Welcome
